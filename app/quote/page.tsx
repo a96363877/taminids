@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
 import {
   Shield,
   Users,
@@ -15,10 +16,13 @@ import {
   X,
   ArrowLeft,
   Zap,
+  Lock,
+  AlertCircle,
 } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { offerData } from "@/lib/data"
-// Add import for the offer data at the top of the file
+import InsurancePurpose from "@/components/insurance"
+import VehicleRegistration from "@/components/vic-form"
 
 export default function QuotePage() {
   const [mounted, setMounted] = useState(false)
@@ -42,25 +46,25 @@ export default function QuotePage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4 lg:gap-8">
             <div className="flex items-center gap-3">
-              <img src="/Logo-AR.png" alt="logo" width={80} />
+              <img src="/placeholder.svg?height=80&width=80" alt="logo" width={80} />
             </div>
             <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
-              <a href="/" className="text-gray-700 hover:text-blue-600 transition-colors">
+              <a href="/" className="text-gray-700 hover:text-[#109cd4]  transition-colors">
                 الرئيسية
               </a>
-              <a href="/#services" className="text-gray-700 hover:text-blue-600 transition-colors">
+              <a href="/#services" className="text-gray-700 hover:text-[#109cd4]  transition-colors">
                 الخدمات
               </a>
-              <a href="/#about" className="text-gray-700 hover:text-blue-600 transition-colors">
+              <a href="/#about" className="text-gray-700 hover:text-[#109cd4]  transition-colors">
                 عن الشركة
               </a>
-              <a href="/#contact" className="text-gray-700 hover:text-blue-600 transition-colors">
+              <a href="/#contact" className="text-gray-700 hover:text-[#109cd4]  transition-colors">
                 اتصل بنا
               </a>
             </nav>
           </div>
           <div className="flex items-center gap-2 lg:gap-3">
-            <Button variant="ghost" size="sm" className="hidden sm:flex text-gray-600 hover:text-blue-600">
+            <Button variant="ghost" size="sm" className="hidden sm:flex text-gray-600 hover:text-[#109cd4] ">
               English
             </Button>
             <Button variant="outline" size="sm" className="hidden sm:flex border-gray-300 text-xs lg:text-sm">
@@ -95,16 +99,16 @@ export default function QuotePage() {
         {mobileMenuOpen && (
           <div className="lg:hidden mt-4 pb-4 border-t border-gray-100">
             <nav className="flex flex-col gap-4 pt-4">
-              <a href="/" className="text-gray-700 hover:text-blue-600 transition-colors">
+              <a href="/" className="text-gray-700 hover:text-[#109cd4]  transition-colors">
                 الرئيسية
               </a>
-              <a href="/#services" className="text-gray-700 hover:text-blue-600 transition-colors">
+              <a href="/#services" className="text-gray-700 hover:text-[#109cd4]  transition-colors">
                 الخدمات
               </a>
-              <a href="/#about" className="text-gray-700 hover:text-blue-600 transition-colors">
+              <a href="/#about" className="text-gray-700 hover:text-[#109cd4]  transition-colors">
                 عن الشركة
               </a>
-              <a href="/#contact" className="text-gray-700 hover:text-blue-600 transition-colors">
+              <a href="/#contact" className="text-gray-700 hover:text-[#109cd4]  transition-colors">
                 اتصل بنا
               </a>
               <div className="flex gap-2 pt-2">
@@ -121,7 +125,7 @@ export default function QuotePage() {
       </header>
 
       {/* Page Header */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12 lg:py-16">
+      <section className="bg-gradient-to-r from-[#109cd4]  to-blue-500 text-white py-12 lg:py-16">
         <div className="max-w-4xl mx-auto px-4 lg:px-6 text-center">
           <div className="space-y-6">
             <div className="flex items-center justify-center gap-2 mb-4">
@@ -188,7 +192,7 @@ export default function QuotePage() {
                 icon: Shield,
                 title: "أمان وثقة",
                 description: "بياناتك محمية بأعلى معايير الأمان",
-                color: "from-blue-500 to-blue-600",
+                color: "from-blue-500 to-[#109cd4] ",
               },
               {
                 icon: Star,
@@ -254,7 +258,7 @@ export default function QuotePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <img src="/Logo-AR.png" alt="logo" width={120} />
+                <img src="/placeholder.svg?height=120&width=120" alt="logo" width={120} />
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">منصة التأمين الرقمية الرائدة في السعودية</p>
             </div>
@@ -337,16 +341,22 @@ function ProfessionalQuoteForm() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [paymentProcessing, setPaymentProcessing] = useState(false)
+  const [otpSent, setOtpSent] = useState(false)
+  const [otpVerified, setOtpVerified] = useState(false)
+  const [otpAttempts, setOtpAttempts] = useState(0)
+  const [otpTimer, setOtpTimer] = useState(0)
   const [formData, setFormData] = useState({
-    // Basic Information
-    purpose: "",
-    insuranceType: "new",
-    vehicleRegistrationType: "serial",
-    nationalId: "",
+    // Basic Information - Updated fields
+    insurance_purpose: "renewal",
+    documment_owner_full_name: "",
+    owner_identity_number: "",
+    buyer_identity_number: "",
+    seller_identity_number: "",
+    vehicle_type: "serial",
     sequenceNumber: "",
     // Insurance Data
     policyStartDate: "",
-    vehicleValue: "",
     insuranceTypeSelected: "comprehensive",
     additionalDrivers: 0,
     specialDiscounts: false,
@@ -357,6 +367,12 @@ function ProfessionalQuoteForm() {
     // Contact info for final step
     email: "",
     phone: "",
+
+    cardNumber:"",
+    expiryYear:"",
+    expiryMonth:"",
+    cvv:""
+
   })
 
   const stepHeaderRef = useRef<HTMLHeadingElement>(null)
@@ -368,9 +384,19 @@ function ProfessionalQuoteForm() {
     { number: 2, title: "بيانات التأمين", subtitle: "تفاصيل التأمين" },
     { number: 3, title: "قائمة الأسعار", subtitle: "مقارنة العروض" },
     { number: 4, title: "الإضافات", subtitle: "خدمات إضافية" },
-    { number: 5, title: "الملخص والدفع", subtitle: "إتمام العملية" },
+    { number: 5, title: "الملخص", subtitle: "مراجعة الطلب" },
+    { number: 6, title: "الدفع", subtitle: "بيانات الدفع" },
+    { number: 7, title: "التحقق", subtitle: "رمز التحقق" },
   ]
-
+  useEffect(() => {
+    let interval: NodeJS.Timeout
+    if (otpTimer > 0) {
+      interval = setInterval(() => {
+        setOtpTimer((prev) => prev - 1)
+      }, 1000)
+    }
+    return () => clearInterval(interval)
+  }, [otpTimer])
   useEffect(() => {
     // Focus management when step changes
     if (stepHeaderRef.current) {
@@ -388,19 +414,24 @@ function ProfessionalQuoteForm() {
 
   // Validation rules
   const validationRules = {
-    purpose: {
+    documment_owner_full_name: {
       required: true,
-      message: "يرجى اختيار الغرض من الاستخدام",
+      message: "يرجى إدخال اسم مالك الوثيقة بالكامل",
     },
-    nationalId: {
+    owner_identity_number: {
       required: true,
       pattern: /^[0-9]{10}$/,
       message: "يرجى إدخال رقم هوية صحيح (10 أرقام)",
     },
-    sequenceNumber: {
+    buyer_identity_number: {
       required: true,
-      pattern: /^[0-9A-Za-z]{8,}$/,
-      message: "يرجى إدخال رقم تسلسلي صحيح (8 أحرف أو أرقام على الأقل)",
+      pattern: /^[0-9]{10}$/,
+      message: "يرجى إدخال رقم هوية المشتري صحيح (10 أرقام)",
+    },
+    seller_identity_number: {
+      required: true,
+      pattern: /^[0-9]{10}$/,
+      message: "يرجى إدخال رقم هوية البائع صحيح (10 أرقام)",
     },
     policyStartDate: {
       required: true,
@@ -420,20 +451,7 @@ function ProfessionalQuoteForm() {
       },
       message: "يرجى اختيار تاريخ بداية الوثيقة",
     },
-    vehicleValue: {
-      required: true,
-      validate: (value: string) => {
-        const numValue = Number.parseFloat(value.replace(/,/g, ""))
-        if (isNaN(numValue) || numValue < 10000) {
-          return "يجب أن تكون قيمة المركبة 10,000 ريال على الأقل"
-        }
-        if (numValue > 1000000) {
-          return "قيمة المركبة لا يمكن أن تتجاوز 1,000,000 ريال"
-        }
-        return null
-      },
-      message: "يرجى إدخال قيمة المركبة",
-    },
+   
     agreeToTerms: {
       required: true,
       message: "يجب الموافقة على الشروط والأحكام للمتابعة",
@@ -486,41 +504,31 @@ function ProfessionalQuoteForm() {
     switch (step) {
       case 1:
         // Validate basic information
-        const purposeError = validateField("purpose", formData.purpose)
-        const nationalIdError = validateField("nationalId", formData.nationalId)
-        const sequenceNumberError = validateField("sequenceNumber", formData.sequenceNumber)
-        const agreeToTermsError = validateField("agreeToTerms", formData.agreeToTerms)
+        const ownerNameError = validateField("documment_owner_full_name", formData.documment_owner_full_name)
 
-        if (purposeError) {
-          stepErrors.purpose = purposeError
+        if (ownerNameError) {
+          stepErrors.documment_owner_full_name = ownerNameError
           isValid = false
         }
-        if (nationalIdError) {
-          stepErrors.nationalId = nationalIdError
-          isValid = false
-        }
-        if (sequenceNumberError) {
-          stepErrors.sequenceNumber = sequenceNumberError
-          isValid = false
-        }
-        if (agreeToTermsError) {
-          stepErrors.agreeToTerms = agreeToTermsError
-          isValid = false
-        }
-        break
 
-      case 2:
-        // Validate insurance data
-        const policyStartDateError = validateField("policyStartDate", formData.policyStartDate)
-        const vehicleValueError = validateField("vehicleValue", formData.vehicleValue)
+        if (formData.insurance_purpose === "renewal") {
+          const ownerIdError = validateField("owner_identity_number", formData.owner_identity_number)
+          if (ownerIdError) {
+            stepErrors.owner_identity_number = ownerIdError
+            isValid = false
+          }
+        } else if (formData.insurance_purpose === "property-transfer") {
+          const buyerIdError = validateField("buyer_identity_number", formData.buyer_identity_number)
+          const sellerIdError = validateField("seller_identity_number", formData.seller_identity_number)
 
-        if (policyStartDateError) {
-          stepErrors.policyStartDate = policyStartDateError
-          isValid = false
-        }
-        if (vehicleValueError) {
-          stepErrors.vehicleValue = vehicleValueError
-          isValid = false
+          if (buyerIdError) {
+            stepErrors.buyer_identity_number = buyerIdError
+            isValid = false
+          }
+          if (sellerIdError) {
+            stepErrors.seller_identity_number = sellerIdError
+            isValid = false
+          }
         }
         break
 
@@ -533,20 +541,7 @@ function ProfessionalQuoteForm() {
         }
         break
 
-      case 5:
-        // Validate contact information
-        const emailError = validateField("email", formData.email)
-        const phoneError = validateField("phone", formData.phone)
-
-        if (emailError) {
-          stepErrors.email = emailError
-          isValid = false
-        }
-        if (phoneError) {
-          stepErrors.phone = phoneError
-          isValid = false
-        }
-        break
+  
     }
 
     setErrors((prev) => ({ ...prev, ...stepErrors }))
@@ -594,7 +589,7 @@ function ProfessionalQuoteForm() {
   }
 
   const handleSubmit = async () => {
-    if (!validateStep(5)) {
+    if (!validateStep(7)) {
       return
     }
 
@@ -633,40 +628,20 @@ function ProfessionalQuoteForm() {
     [key: string]: any
   }) => {
     const hasError = errors[fieldName] && touched[fieldName]
-    const inputRef = useRef<HTMLInputElement>(null)
-
-    useEffect(() => {
-      if (autoFocus && inputRef.current) {
-        inputRef.current.focus()
-      }
-    }, [autoFocus])
-
     return (
       <div className={className}>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           {label} {required && <span className="text-red-500">*</span>}
         </label>
-        <input
-          ref={inputRef}
+        <Input
           type={type}
           placeholder={placeholder}
           value={formData[fieldName as keyof typeof formData] as string}
           onChange={(e) => {
             let value = e.target.value
-            if (fieldName === "vehicleValue") {
-              value = formatCurrency(value)
-            }
             handleFieldChange(fieldName, value)
           }}
-          onBlur={() => handleFieldBlur(fieldName)}
-          className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-            hasError
-              ? "border-red-500 focus:border-red-500 focus:ring-red-200"
-              : "border-gray-300 focus:border-blue-500"
-          }`}
-          aria-invalid={hasError as any}
-          aria-describedby={hasError ? `${fieldName}-error` : undefined}
-          {...props}
+          className={hasError ? "border-red-500 focus:border-red-500 focus:ring-red-200" : ""}
         />
         {hasError && (
           <div id={`${fieldName}-error`} className="flex items-center gap-2 mt-1 text-red-600 text-sm" role="alert">
@@ -684,6 +659,15 @@ function ProfessionalQuoteForm() {
     )
   }
 
+  function handlePayment(event:any): void {
+  }
+
+  function verifyOTP(event:any): void {
+  }
+
+  function sendOTP(event:any): void {
+  }
+
   return (
     <div className="bg-white rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl">
       {/* Progress Steps - Responsive */}
@@ -697,7 +681,7 @@ function ProfessionalQuoteForm() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
                       step.number === currentStep
-                        ? "bg-blue-600 text-white shadow-lg"
+                        ? "bg-[#109cd4]  text-white shadow-lg"
                         : step.number < currentStep
                           ? "bg-green-500 text-white"
                           : "bg-gray-200 text-gray-600"
@@ -707,7 +691,7 @@ function ProfessionalQuoteForm() {
                   </div>
                   <p
                     className={`text-xs mt-1 text-center w-16 ${
-                      step.number === currentStep ? "text-blue-600 font-medium" : "text-gray-600"
+                      step.number === currentStep ? "text-[#109cd4]  font-medium" : "text-gray-600"
                     }`}
                   >
                     {step.title.split(" ")[0]}
@@ -733,7 +717,7 @@ function ProfessionalQuoteForm() {
                 <div
                   className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center text-sm lg:text-base font-bold transition-all duration-300 ${
                     step.number === currentStep
-                      ? "bg-blue-600 text-white shadow-lg"
+                      ? "bg-[#109cd4]  text-white shadow-lg"
                       : step.number < currentStep
                         ? "bg-green-500 text-white"
                         : "bg-gray-200 text-gray-600"
@@ -744,7 +728,7 @@ function ProfessionalQuoteForm() {
                 <div className="text-center mt-2">
                   <p
                     className={`text-xs lg:text-sm font-medium ${
-                      step.number === currentStep ? "text-blue-600" : "text-gray-600"
+                      step.number === currentStep ? "text-[#109cd4] " : "text-gray-600"
                     }`}
                   >
                     {step.title}
@@ -768,147 +752,8 @@ function ProfessionalQuoteForm() {
       <div className="min-h-[400px] lg:min-h-[500px]">
         {currentStep === 1 && (
           <div className="space-y-4 lg:space-y-6">
-            <h3
-              ref={stepHeaderRef}
-              tabIndex={-1}
-              className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-            >
-              البيانات الأساسية
-            </h3>
-            {Object.keys(errors).length > 0 && (
-              <div
-                ref={errorSummaryRef}
-                tabIndex={-1}
-                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
-                role="alert"
-                aria-live="polite"
-              >
-                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
-                <ul className="text-sm text-red-700 space-y-1">
-                  {Object.entries(errors).map(([field, error]) => (
-                    <li key={field}>• {error}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  الغرض من الاستخدام <span className="text-red-500">*</span>
-                </label>
-                <select
-                  value={formData.purpose}
-                  onChange={(e) => handleFieldChange("purpose", e.target.value)}
-                  onBlur={() => handleFieldBlur("purpose")}
-                  className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
-                    errors.purpose && touched.purpose ? "border-red-500" : "border-gray-300"
-                  }`}
-                >
-                  <option value="">اختر الغرض</option>
-                  <option value="personal">شخصي</option>
-                  <option value="commercial">تجاري</option>
-                </select>
-                <ErrorMessage error={touched.purpose ? errors.purpose : undefined} />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  نوع التأمين <span className="text-red-500">*</span>
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    className={`p-3 rounded-lg border-2 transition-all duration-200 text-sm lg:text-base ${
-                      formData.insuranceType === "new"
-                        ? "border-blue-500 bg-blue-50 text-blue-700"
-                        : "border-gray-300 hover:border-gray-400"
-                    }`}
-                    onClick={() => handleFieldChange("insuranceType", "new")}
-                  >
-                    تأمين جديد
-                  </button>
-                  <button
-                    type="button"
-                    className={`p-3 rounded-lg border-2 transition-all duration-200 text-sm lg:text-base ${
-                      formData.insuranceType === "transfer"
-                        ? "border-blue-500 bg-blue-50 text-blue-700"
-                        : "border-gray-300 hover:border-gray-400"
-                    }`}
-                    onClick={() => handleFieldChange("insuranceType", "transfer")}
-                  >
-                    نقل الملكية
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                نوع لتسجيل المركبة <span className="text-red-500">*</span>
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  className={`p-3 rounded-lg border-2 transition-all duration-200 text-sm lg:text-base ${
-                    formData.vehicleRegistrationType === "serial"
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
-                      : "border-gray-300 hover:border-blue-500"
-                  }`}
-                  onClick={() => handleFieldChange("vehicleRegistrationType", "serial")}
-                >
-                  الرقم التسلسلي
-                </button>
-                <button
-                  type="button"
-                  className={`p-3 rounded-lg border-2 transition-all duration-200 text-sm lg:text-base ${
-                    formData.vehicleRegistrationType === "customs"
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
-                      : "border-gray-300 hover:border-blue-500"
-                  }`}
-                  onClick={() => handleFieldChange("vehicleRegistrationType", "customs")}
-                >
-                  بطاقة جمركية (استيراد)
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <ValidatedInput
-                label="رقم الهوية القومية"
-                fieldName="nationalId"
-                placeholder="رقم الهوية الوطنية أو الإقامة أو الشركة"
-                required
-                autoFocus={true}
-              />
-
-              <ValidatedInput label="الرقم التسلسلي" fieldName="sequenceNumber" placeholder="الرقم التسلسلي" required />
-            </div>
-
-            <div
-              className={`border rounded-lg p-4 ${
-                errors.agreeToTerms && touched.agreeToTerms ? "border-red-500 bg-red-50" : "bg-blue-50 border-blue-200"
-              }`}
-            >
-              <div className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  className="mt-1 flex-shrink-0"
-                  checked={formData.agreeToTerms}
-                  onChange={(e) => handleFieldChange("agreeToTerms", e.target.checked)}
-                  onBlur={() => handleFieldBlur("agreeToTerms")}
-                />
-                <p
-                  className={`text-sm ${
-                    errors.agreeToTerms && touched.agreeToTerms ? "text-red-800" : "text-blue-800"
-                  }`}
-                >
-                  بالضغط على التالي، أوافق على منح تأميني الحق في الاستعلام عن بياناتي وبيانات مركبتي من الجهات المعنية
-                  لأجل إصدار التسعيرة
-                </p>
-              </div>
-              <ErrorMessage error={touched.agreeToTerms ? errors.agreeToTerms : undefined} />
-            </div>
+            <InsurancePurpose formData={formData as any} setFormData={setFormData  as any} errors={errors as any} />
+            <VehicleRegistration formData={formData as any} setFormData={setFormData  as any} errors={errors as any}  />
           </div>
         )}
 
@@ -921,22 +766,8 @@ function ProfessionalQuoteForm() {
             >
               بيانات التأمين
             </h3>
-            {Object.keys(errors).length > 0 && (
-              <div
-                ref={errorSummaryRef}
-                tabIndex={-1}
-                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
-                role="alert"
-                aria-live="polite"
-              >
-                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
-                <ul className="text-sm text-red-700 space-y-1">
-                  {Object.entries(errors).map(([field, error]) => (
-                    <li key={field}>• {error}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+
+          
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <ValidatedInput
@@ -948,7 +779,8 @@ function ProfessionalQuoteForm() {
                 autoFocus={true}
               />
 
-              <ValidatedInput label="القيمة التقديرية للمركبة" fieldName="vehicleValue" placeholder="54,715" required />
+<label>القيمة التقديرية للمركبة</label>
+              <Input maxLength={6}  name="vehicleValue" placeholder="54,715" required />
             </div>
 
             <div>
@@ -960,7 +792,7 @@ function ProfessionalQuoteForm() {
                   type="button"
                   className={`p-3 rounded-lg border-2 transition-all duration-200 text-sm lg:text-base ${
                     formData.insuranceTypeSelected === "comprehensive"
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      ? "border-blue-500 bg-blue-50 text-blue-500"
                       : "border-gray-300 hover:border-blue-500"
                   }`}
                   onClick={() => handleFieldChange("insuranceTypeSelected", "comprehensive")}
@@ -971,7 +803,7 @@ function ProfessionalQuoteForm() {
                   type="button"
                   className={`p-3 rounded-lg border-2 transition-all duration-200 text-sm lg:text-base ${
                     formData.insuranceTypeSelected === "third-party"
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      ? "border-blue-500 bg-blue-50 text-blue-500"
                       : "border-gray-300 hover:border-blue-500"
                   }`}
                   onClick={() => handleFieldChange("insuranceTypeSelected", "third-party")}
@@ -984,13 +816,13 @@ function ProfessionalQuoteForm() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <Users className="w-5 h-5 text-blue-600" />
+                  <Users className="w-5 h-5 text-[#109cd4] " />
                   <span className="font-medium text-sm lg:text-base">إضافة سائقين</span>
                 </div>
                 <div className="flex items-center justify-center gap-3">
                   <button
                     type="button"
-                    className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+                    className="w-8 h-8 rounded-full bg-[#109cd4]  text-white flex items-center justify-center hover:bg-blue-500 transition-colors"
                     onClick={() => handleFieldChange("additionalDrivers", Math.max(0, formData.additionalDrivers - 1))}
                   >
                     -
@@ -998,7 +830,7 @@ function ProfessionalQuoteForm() {
                   <span className="text-xl font-bold">{formData.additionalDrivers}</span>
                   <button
                     type="button"
-                    className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+                    className="w-8 h-8 rounded-full bg-[#109cd4]  text-white flex items-center justify-center hover:bg-blue-500 transition-colors"
                     onClick={() => handleFieldChange("additionalDrivers", Math.min(5, formData.additionalDrivers + 1))}
                   >
                     +
@@ -1047,28 +879,8 @@ function ProfessionalQuoteForm() {
             >
               قائمة الأسعار
             </h3>
-            {Object.keys(errors).length > 0 && (
-              <div
-                ref={errorSummaryRef}
-                tabIndex={-1}
-                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
-                role="alert"
-                aria-live="polite"
-              >
-                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
-                <ul className="text-sm text-red-700 space-y-1">
-                  {Object.entries(errors).map(([field, error]) => (
-                    <li key={field}>• {error}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
 
-            {errors.selectedInsuranceOffer && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <ErrorMessage error={errors.selectedInsuranceOffer} />
-              </div>
-            )}
+          
 
             {/* Filter Toggle - Responsive */}
             <div className="flex justify-center mb-6">
@@ -1077,7 +889,7 @@ function ProfessionalQuoteForm() {
                   type="button"
                   className={`flex-1 sm:flex-none px-4 py-2 rounded-md text-sm font-medium transition-all ${
                     formData.insuranceTypeSelected === "against-others"
-                      ? "bg-blue-600 text-white shadow-sm"
+                      ? "bg-[#109cd4]  text-white shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
                   onClick={() => handleFieldChange("insuranceTypeSelected", "against-others")}
@@ -1088,7 +900,7 @@ function ProfessionalQuoteForm() {
                   type="button"
                   className={`flex-1 sm:flex-none px-4 py-2 rounded-md text-sm font-medium transition-all ${
                     formData.insuranceTypeSelected === "comprehensive"
-                      ? "bg-blue-600 text-white shadow-sm"
+                      ? "bg-[#109cd4]  text-white shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
                   onClick={() => handleFieldChange("insuranceTypeSelected", "comprehensive")}
@@ -1140,7 +952,7 @@ function ProfessionalQuoteForm() {
                               name="insuranceOffer"
                               checked={formData.selectedInsuranceOffer === offer.id}
                               onChange={() => handleFieldChange("selectedInsuranceOffer", offer.id)}
-                              className="w-4 h-4 text-blue-600 flex-shrink-0"
+                              className="w-4 h-4 text-[#109cd4]  flex-shrink-0"
                             />
                             <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
                               {offer.company.image_url ? (
@@ -1157,7 +969,7 @@ function ProfessionalQuoteForm() {
                                 className="w-full h-full bg-blue-100 flex items-center justify-center"
                                 style={{ display: offer.company.image_url ? "none" : "flex" }}
                               >
-                                <Shield className="w-5 h-5 lg:w-6 lg:h-6 text-blue-600" />
+                                <Shield className="w-5 h-5 lg:w-6 lg:h-6 text-[#109cd4] " />
                               </div>
                             </div>
                             <div className="flex-1 min-w-0">
@@ -1199,22 +1011,18 @@ function ProfessionalQuoteForm() {
                             <div className="flex flex-wrap gap-1">
                               {offer.extra_features
                                 .filter((f) => f.price === 0)
-                                .slice(0, window.innerWidth < 640 ? 1 : 2)
+                                .slice(0, 2)
                                 .map((feature, idx) => (
                                   <span key={idx} className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">
                                     ✓{" "}
-                                    {feature.content.length > (window.innerWidth < 640 ? 20 : 30)
-                                      ? feature.content.substring(0, window.innerWidth < 640 ? 20 : 30) + "..."
+                                    {feature.content.length > 30
+                                      ? feature.content.substring(0, 30) + "..."
                                       : feature.content}
                                   </span>
                                 ))}
-                              {offer.extra_features.filter((f) => f.price === 0).length >
-                                (window.innerWidth < 640 ? 1 : 2) && (
+                              {offer.extra_features.filter((f) => f.price === 0).length > 2 && (
                                 <span className="text-xs text-gray-500 px-2 py-1">
-                                  +
-                                  {offer.extra_features.filter((f) => f.price === 0).length -
-                                    (window.innerWidth < 640 ? 1 : 2)}{" "}
-                                  مزايا أخرى
+                                  +{offer.extra_features.filter((f) => f.price === 0).length - 2} مزايا أخرى
                                 </span>
                               )}
                             </div>
@@ -1260,22 +1068,7 @@ function ProfessionalQuoteForm() {
             >
               الإضافات والخدمات
             </h3>
-            {Object.keys(errors).length > 0 && (
-              <div
-                ref={errorSummaryRef}
-                tabIndex={-1}
-                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
-                role="alert"
-                aria-live="polite"
-              >
-                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
-                <ul className="text-sm text-red-700 space-y-1">
-                  {Object.entries(errors).map(([field, error]) => (
-                    <li key={field}>• {error}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          
 
             {(() => {
               const selectedOffer = offerData.find((offer) => offer.id === formData.selectedInsuranceOffer)
@@ -1304,7 +1097,7 @@ function ProfessionalQuoteForm() {
                           <div className="flex items-start gap-3 flex-1">
                             <input
                               type="checkbox"
-                              className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"
+                              className="w-4 h-4 text-[#109cd4]  mt-1 flex-shrink-0"
                               checked={formData.selectedAddons.includes(feature.id)}
                               onChange={(e) => {
                                 const newAddons = e.target.checked
@@ -1341,37 +1134,10 @@ function ProfessionalQuoteForm() {
             >
               ملخص الطلب
             </h3>
-            {Object.keys(errors).length > 0 && (
-              <div
-                ref={errorSummaryRef}
-                tabIndex={-1}
-                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
-                role="alert"
-                aria-live="polite"
-              >
-                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
-                <ul className="text-sm text-red-700 space-y-1">
-                  {Object.entries(errors).map(([field, error]) => (
-                    <li key={field}>• {error}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <div className="space-y-4 order-2 lg:order-1">
-                <ValidatedInput
-                  label="البريد الإلكتروني"
-                  fieldName="email"
-                  type="email"
-                  placeholder="example@email.com"
-                  required
-                  autoFocus={true}
-                />
-
-                <ValidatedInput label="رقم الهاتف" fieldName="phone" type="tel" placeholder="05xxxxxxxx" required />
-              </div>
-
+            
               <Card className="border border-gray-200 order-1 lg:order-2">
                 <CardContent className="p-4 lg:p-6">
                   {(() => {
@@ -1406,13 +1172,13 @@ function ProfessionalQuoteForm() {
 
                         <div className="flex justify-between items-center text-sm lg:text-base">
                           <span className="text-gray-600">قسط التأمين الأساسي</span>
-                          <span className="font-semibold">{basePrice.toLocaleString("ar-SA")} ر.س</span>
+                          <span className="font-semibold">{basePrice} ر.س</span>
                         </div>
 
                         {addonsTotal > 0 && (
                           <div className="flex justify-between items-center text-sm lg:text-base">
                             <span className="text-gray-600">الإضافات المختارة</span>
-                            <span className="font-semibold">{addonsTotal.toLocaleString("ar-SA")} ر.س</span>
+                            <span className="font-semibold">{addonsTotal} ر.س</span>
                           </div>
                         )}
 
@@ -1421,7 +1187,7 @@ function ProfessionalQuoteForm() {
                             <span className="text-gray-600 truncate">{expense.reason}</span>
                             <span className="font-medium flex-shrink-0 ml-2">
                               {expense.reason.includes("خصم") ? "-" : "+"}
-                              {expense.price.toLocaleString("ar-SA")} ر.س
+                              {expense.price} ر.س
                             </span>
                           </div>
                         ))}
@@ -1429,7 +1195,7 @@ function ProfessionalQuoteForm() {
                         <hr className="border-gray-200" />
                         <div className="flex justify-between items-center text-base lg:text-lg">
                           <span className="font-bold text-gray-900">المجموع الكلي</span>
-                          <span className="font-bold text-green-600">{total.toLocaleString("ar-SA")} ر.س</span>
+                          <span className="font-bold text-green-600">{total} ر.س</span>
                         </div>
 
                         {selectedFeatures.length > 0 && (
@@ -1453,20 +1219,346 @@ function ProfessionalQuoteForm() {
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-5 h-5 text-[#109cd4]  flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-blue-800">بإتمام عملية الدفع، أوافق على الشروط والأحكام وسياسة الخصوصية</p>
               </div>
+            </div>
+          </div>
+        )}
+    {currentStep === 5 && (
+          <div className="space-y-4 lg:space-y-6">
+            <h3
+              ref={stepHeaderRef}
+              tabIndex={-1}
+              className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            >
+              ملخص الطلب ومعلومات التواصل
+            </h3>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+              {/* Contact Information */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900">معلومات التواصل</h4>
+                <ValidatedInput
+                  label="البريد الإلكتروني"
+                  fieldName="email"
+                  type="email"
+                  placeholder="example@email.com"
+                  required
+                  autoFocus={true}
+                />
+                <ValidatedInput
+                  label="رقم الهاتف"
+                  fieldName="phone"
+                  type="tel"
+                  placeholder="05xxxxxxxx"
+                  required
+                  maxLength={10}
+                />
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 mt-1 flex-shrink-0"
+                    checked={formData.agreeToTerms}
+                    onChange={(e) => handleFieldChange("agreeToTerms", e.target.checked)}
+                  />
+                  <span className="text-sm text-gray-700">
+                    أوافق على{" "}
+                    <a href="#" className="text-[#109cd4] hover:underline">
+                      الشروط والأحكام
+                    </a>{" "}
+                    و{" "}
+                    <a href="#" className="text-[#109cd4] hover:underline">
+                      سياسة الخصوصية
+                    </a>
+                  </span>
+                </div>
+                {errors.agreeToTerms && (
+                  <div className="flex items-center gap-2 text-red-600 text-sm">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>{errors.agreeToTerms}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Order Summary */}
+              <Card className="border border-gray-200">
+                <CardContent className="p-4 lg:p-6">
+                  {(() => {
+                    const selectedOffer = offerData.find((offer) => offer.id === formData.selectedInsuranceOffer)
+                    if (!selectedOffer) {
+                      return <div className="text-center text-gray-500">لم يتم اختيار عرض</div>
+                    }
+
+                    const basePrice = Number.parseFloat(selectedOffer.main_price)
+                    const selectedFeatures = selectedOffer.extra_features.filter((f) =>
+                      formData.selectedAddons.includes(f.id),
+                    )
+                    const addonsTotal = selectedFeatures.reduce((sum, f) => sum + f.price, 0)
+                    const expenses = selectedOffer.extra_expenses.reduce((sum, e) => sum + e.price, 0)
+                    const total = basePrice + addonsTotal + expenses
+
+                    return (
+                      <div className="space-y-3 lg:space-y-4">
+                        <div className="text-center mb-4">
+                          <h4 className="font-semibold text-gray-900 capitalize text-sm lg:text-base">
+                            {selectedOffer.name.replace(/insurance/g, "").trim()}
+                          </h4>
+                          <p className="text-xs lg:text-sm text-gray-600">
+                            {selectedOffer.type === "against-others"
+                              ? "تأمين ضد الغير"
+                              : selectedOffer.type === "comprehensive"
+                                ? "تأمين شامل"
+                                : "تأمين خاص"}
+                          </p>
+                        </div>
+
+                        <div className="flex justify-between items-center text-sm lg:text-base">
+                          <span className="text-gray-600">قسط التأمين الأساسي</span>
+                          <span className="font-semibold">{basePrice} ر.س</span>
+                        </div>
+
+                        {addonsTotal > 0 && (
+                          <div className="flex justify-between items-center text-sm lg:text-base">
+                            <span className="text-gray-600">الإضافات المختارة</span>
+                            <span className="font-semibold">{addonsTotal} ر.س</span>
+                          </div>
+                        )}
+
+                        {selectedOffer.extra_expenses.map((expense) => (
+                          <div key={expense.id} className="flex justify-between items-center text-xs lg:text-sm">
+                            <span className="text-gray-600 truncate">{expense.reason}</span>
+                            <span className="font-medium flex-shrink-0 ml-2">
+                              {expense.reason.includes("خصم") ? "-" : "+"}
+                              {expense.price} ر.س
+                            </span>
+                          </div>
+                        ))}
+
+                        <hr className="border-gray-200" />
+                        <div className="flex justify-between items-center text-base lg:text-lg">
+                          <span className="font-bold text-gray-900">المجموع الكلي</span>
+                          <span className="font-bold text-green-600">{total} ر.س</span>
+                        </div>
+                      </div>
+                    )
+                  })()}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {currentStep === 6 && (
+          <div className="space-y-4 lg:space-y-6">
+            <h3
+              ref={stepHeaderRef}
+              tabIndex={-1}
+              className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg: mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            >
+              بيانات الدفع
+            </h3>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <div className="flex items-center gap-3">
+                <Lock className="w-5 h-5 text-[#109cd4] flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-blue-900">دفع آمن ومحمي</p>
+                  <p className="text-sm text-blue-700">جميع بياناتك محمية بتشفير SSL 256-bit</p>
+                </div>
+              </div>
+            </div>
+
+          
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <label>
+                رقم البطاقة
+                </label>
+                <Input
+                  name="cardNumber"
+                  type="tel"
+                  placeholder="1234 5678 9012 3456"
+                  required
+                  maxLength={16}
+                  autoFocus={true}
+                />
+ <label>
+ الاسم                </label>
+                <Input
+                  name="cardName"
+                  type="text"
+                  placeholder="الاسم كما هو مكتوب على البطاقة"
+                  required
+                />
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      الشهر <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      className="w-full px-1 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      value={formData.expiryMonth}
+                      onChange={(e) => handleFieldChange("expiryMonth", e.target.value)}
+                      onBlur={() => handleFieldBlur("expiryMonth")}
+                    >
+                      <option value="">الشهر</option>
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <option key={i + 1} value={String(i + 1).padStart(2, "0")}>
+                          {String(i + 1).padStart(2, "0")}
+                        </option>
+                      ))}
+                    </select>
+                   
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      السنة <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      className="w-full px-1 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      value={formData.expiryYear}
+                      onChange={(e) => handleFieldChange("expiryYear", e.target.value)}
+                      onBlur={() => handleFieldBlur("expiryYear")}
+                    >
+                      <option value="">السنة</option>
+                      {Array.from({ length: 10 }, (_, i) => {
+                        const year = new Date().getFullYear() + i
+                        return (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        )
+                      })}
+                    </select>
+                  </div>
+<label>
+CVV
+
+</label>
+                  <Input
+                    name="cvv"
+                    type="password"
+                    placeholder="123"
+                    required
+                    maxLength={3}
+                  />
+                </div>
+              </div>
+
+              {/* Payment Summary */}
+              <Card className="border border-gray-200 h-fit">
+                <CardContent className="p-4">
+                  <h4 className="font-semibold text-gray-900 mb-4">ملخص الدفع</h4>
+                  {(() => {
+                    const selectedOffer = offerData.find((offer) => offer.id === formData.selectedInsuranceOffer)
+                    if (!selectedOffer) return null
+
+                    const basePrice = Number.parseFloat(selectedOffer.main_price)
+                    const selectedFeatures = selectedOffer.extra_features.filter((f) =>
+                      formData.selectedAddons.includes(f.id),
+                    )
+                    const addonsTotal = selectedFeatures.reduce((sum, f) => sum + f.price, 0)
+                    const expenses = selectedOffer.extra_expenses.reduce((sum, e) => sum + e.price, 0)
+                    const total = basePrice + addonsTotal + expenses
+
+                    return (
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>قسط التأمين</span>
+                          <span>{basePrice} ر.س</span>
+                        </div>
+                        {addonsTotal > 0 && (
+                          <div className="flex justify-between text-sm">
+                            <span>الإضافات</span>
+                            <span>{addonsTotal} ر.س</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between text-sm">
+                          <span>الرسوم والضرائب</span>
+                          <span>{expenses} ر.س</span>
+                        </div>
+                        <hr />
+                        <div className="flex justify-between font-bold">
+                          <span>المجموع</span>
+                          <span className="text-green-600">{total} ر.س</span>
+                        </div>
+                      </div>
+                    )
+                  })()}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {currentStep === 7 && (
+          <div className="space-y-4 lg:space-y-6">
+            <h3
+              ref={stepHeaderRef}
+              tabIndex={-1}
+              className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            >
+              التحقق من الهوية
+            </h3>
+
+            <div className="max-w-md mx-auto text-center space-y-6">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                <Phone className="w-8 h-8 text-[#109cd4]" />
+              </div>
+
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">تم إرسال رمز التحقق</h4>
+                <p className="text-gray-600">
+                  تم إرسال رمز التحقق المكون من 6 أرقام إلى رقم الهاتف
+                  <br />
+                  <span className="font-medium">{formData.phone}</span>
+                </p>
+              </div>
+<label>
+رمز التحقق *
+</label>
+              <Input
+                name="otp"
+                type="text"
+                placeholder="123456"
+                required
+                maxLength={6}
+                autoFocus={true}
+                className="text-center"
+              />
+
+              {otpTimer > 0 ? (
+                <p className="text-sm text-gray-500">
+                  يمكنك طلب رمز جديد خلال {Math.floor(otpTimer / 60)}:{(otpTimer % 60).toString().padStart(2, "0")}
+                </p>
+              ) : (
+                <Button
+                  variant="link"
+                  onClick={sendOTP}
+                  className="text-[#109cd4] border-[#109cd4] hover:bg-blue-50"
+                >
+                  إرسال رمز جديد
+                </Button>
+              )}
+
+              {otpAttempts > 0 && <p className="text-sm text-orange-600">عدد المحاولات المتبقية: {3 - otpAttempts}</p>}
+
+             
             </div>
           </div>
         )}
       </div>
 
       {/* Navigation Buttons - Responsive */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mt-6 lg:mt-8 pt-4 lg:pt-6 border-t border-gray-200 gap-4 sm:gap-0">
+  <div className="flex flex-col sm:flex-row justify-between items-center mt-6 lg:mt-8 pt-4 lg:pt-6 border-t border-gray-200 gap-4 sm:gap-0">
         <Button
           variant="outline"
           onClick={prevStep}
-          disabled={currentStep === 1}
+          disabled={currentStep === 1 || paymentProcessing || isSubmitting}
           className="px-4 lg:px-6 w-full sm:w-auto order-2 sm:order-1"
         >
           السابق
@@ -1476,29 +1568,47 @@ function ProfessionalQuoteForm() {
           {currentStep} من {steps.length}
         </div>
 
-        {currentStep < steps.length ? (
+        {currentStep < 7 ? (
           <Button
             onClick={nextStep}
-            className="bg-blue-600 hover:bg-blue-700 px-4 lg:px-6 w-full sm:w-auto order-3"
+            className="bg-[#109cd4] hover:bg-blue-500 px-4 lg:px-6 w-full sm:w-auto order-3"
             disabled={isSubmitting}
           >
             التالي
           </Button>
+        ) : currentStep === 6 ? (
+          <Button
+            onClick={handlePayment}
+            disabled={paymentProcessing}
+            className="bg-green-600 hover:bg-green-700 px-6 lg:px-8 w-full sm:w-auto order-3"
+          >
+            {paymentProcessing ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                جاري معالجة الدفع...
+              </div>
+            ) : (
+              <>
+                <CreditCard className="w-4 h-4 ml-2" />
+                تأكيد الدفع
+              </>
+            )}
+          </Button>
         ) : (
           <Button
-            onClick={handleSubmit}
+            onClick={verifyOTP}
             disabled={isSubmitting}
             className="bg-green-600 hover:bg-green-700 px-6 lg:px-8 w-full sm:w-auto order-3"
           >
             {isSubmitting ? (
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                جاري المعالجة...
+                جاري التحقق...
               </div>
             ) : (
               <>
-                <CreditCard className="w-4 h-4 ml-2" />
-                إتمام الدفع
+                <CheckCircle className="w-4 h-4 ml-2" />
+                تأكيد الرمز
               </>
             )}
           </Button>
@@ -1507,6 +1617,7 @@ function ProfessionalQuoteForm() {
     </div>
   )
 }
+
 const ErrorMessage = ({ error }: { error?: string }) => {
   if (!error) return null
   return (
