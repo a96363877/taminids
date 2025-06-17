@@ -212,7 +212,7 @@ export default function TameeniComprehensive() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4 lg:gap-8">
             <div className="flex items-center gap-3">
-            <img src="/Logo-AR.png" alt="logo" width={80} />
+              <img src="/Logo-AR.png" alt="logo" width={80} />
 
             </div>
             <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
@@ -234,14 +234,20 @@ export default function TameeniComprehensive() {
             <Button variant="ghost" size="sm" className="hidden sm:flex text-gray-600 hover:text-blue-600">
               English
             </Button>
-            <Button variant="outline" size="sm" className="hidden sm:flex border-gray-300 text-xs lg:text-sm">
+            <Button
+              onClick={() => (window.location.href = "/quote")}
+
+              variant="outline" size="sm" className="hidden sm:flex border-gray-300 text-xs lg:text-sm">
               تسجيل الدخول
             </Button>
             <Button
+              onClick={() => (window.location.href = "/quote")}
+
               size="sm"
               className="bg-gradient-to-r from-blue-600 to-[#109cd4]  hover:from-[#109cd4]  hover:to-[#109cd4]  shadow-lg text-xs lg:text-sm px-3 lg:px-4"
             >
-              إنشاء حساب
+              ابدأ الآن
+
             </Button>
             <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -334,7 +340,7 @@ export default function TameeniComprehensive() {
             <div className="flex flex-wrap items-center justify-center gap-8 opacity-60">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                 <div key={i} className="w-20 h-12 bg-gray-200 rounded flex items-center justify-center">
-               <img className="w-16 h-10" src={`/companies/company-${i}.svg`} alt=""/>
+                  <img className="w-16 h-10" src={`/companies/company-${i}.svg`} alt="" />
                 </div>
               ))}
             </div>
@@ -351,7 +357,7 @@ export default function TameeniComprehensive() {
               <CardContent className="p-8 relative">
                 <div className="flex items-center justify-between">
                   <div className="space-y-4">
-                    
+
                   </div>
                   <div className="hidden md:block">
                     <Image
@@ -371,7 +377,7 @@ export default function TameeniComprehensive() {
               <CardContent className="p-8 relative">
                 <div className="flex items-center justify-between">
                   <div className="space-y-4">
-                    
+
                   </div>
                   <div className="hidden md:block">
                     <Image
@@ -892,7 +898,7 @@ export default function TameeniComprehensive() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 lg:mb-12">
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-              <img src="/Logo-AR.png" alt="logo" width={120} />
+                <img src="/Logo-AR.png" alt="logo" width={120} />
 
               </div>
               <p className="text-sm lg:text-base text-gray-400 leading-relaxed">

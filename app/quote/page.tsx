@@ -16,13 +16,17 @@ import {
   ArrowLeft,
   Zap,
 } from "lucide-react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { offerData } from "@/lib/data"
 // Add import for the offer data at the top of the file
 
 export default function QuotePage() {
   const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const headerRef = useRef<HTMLElement>(null)
+  const formRef = useRef<HTMLDivElement>(null)
+  const stepContentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -38,10 +42,7 @@ export default function QuotePage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4 lg:gap-8">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-sm lg:text-lg">ت</span>
-              </div>
-              <span className="text-lg lg:text-xl font-bold text-gray-900">تأميني</span>
+              <img src="/Logo-AR.png" alt="logo" width={80} />
             </div>
             <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
               <a href="/" className="text-gray-700 hover:text-blue-600 transition-colors">
@@ -67,11 +68,24 @@ export default function QuotePage() {
             </Button>
             <Button
               size="sm"
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg text-xs lg:text-sm px-3 lg:px-4"
+              className="bg-gradient-to-r from-[#109cd4] to-blue-500 hover:from-[#109cd4] hover:to-[#109cd4] shadow-lg text-xs lg:text-sm px-3 lg:px-4"
             >
-              إنشاء حساب
+              ابدأ الآن{" "}
             </Button>
-            <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="lg:hidden"
+              data-mobile-menu-toggle
+              onClick={() => {
+                setMobileMenuOpen(!mobileMenuOpen)
+                // Maintain focus on the button after toggle
+                setTimeout(() => {
+                  const button = document.querySelector("[data-mobile-menu-toggle]") as HTMLButtonElement
+                  if (button) button.focus()
+                }, 100)
+              }}
+            >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
           </div>
@@ -240,10 +254,7 @@ export default function QuotePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">ت</span>
-                </div>
-                <span className="text-lg font-bold">تأميني</span>
+                <img src="/Logo-AR.png" alt="logo" width={120} />
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">منصة التأمين الرقمية الرائدة في السعودية</p>
             </div>
@@ -348,6 +359,10 @@ function ProfessionalQuoteForm() {
     phone: "",
   })
 
+  const stepHeaderRef = useRef<HTMLHeadingElement>(null)
+  const firstInputRef = useRef<HTMLInputElement>(null)
+  const errorSummaryRef = useRef<HTMLDivElement>(null)
+
   const steps = [
     { number: 1, title: "البيانات الأساسية", subtitle: "معلومات أساسية" },
     { number: 2, title: "بيانات التأمين", subtitle: "تفاصيل التأمين" },
@@ -355,6 +370,21 @@ function ProfessionalQuoteForm() {
     { number: 4, title: "الإضافات", subtitle: "خدمات إضافية" },
     { number: 5, title: "الملخص والدفع", subtitle: "إتمام العملية" },
   ]
+
+  useEffect(() => {
+    // Focus management when step changes
+    if (stepHeaderRef.current) {
+      stepHeaderRef.current.focus()
+      stepHeaderRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [currentStep])
+
+  useEffect(() => {
+    // Focus on first error when validation fails
+    if (Object.keys(errors).length > 0 && errorSummaryRef.current) {
+      errorSummaryRef.current.focus()
+    }
+  }, [errors])
 
   // Validation rules
   const validationRules = {
@@ -582,23 +612,6 @@ function ProfessionalQuoteForm() {
     }
   }
 
-  // Error message component
-  const ErrorMessage = ({ error }: { error?: string }) => {
-    if (!error) return null
-    return (
-      <div className="flex items-center gap-2 mt-1 text-red-600 text-sm">
-        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fillRule="evenodd"
-            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-            clipRule="evenodd"
-          />
-        </svg>
-        <span>{error}</span>
-      </div>
-    )
-  }
-
   // Input field component with validation
   const ValidatedInput = ({
     label,
@@ -607,6 +620,7 @@ function ProfessionalQuoteForm() {
     placeholder,
     required = false,
     className = "",
+    autoFocus = false,
     ...props
   }: {
     label: string
@@ -615,9 +629,17 @@ function ProfessionalQuoteForm() {
     placeholder?: string
     required?: boolean
     className?: string
+    autoFocus?: boolean
     [key: string]: any
   }) => {
     const hasError = errors[fieldName] && touched[fieldName]
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+      if (autoFocus && inputRef.current) {
+        inputRef.current.focus()
+      }
+    }, [autoFocus])
 
     return (
       <div className={className}>
@@ -625,6 +647,7 @@ function ProfessionalQuoteForm() {
           {label} {required && <span className="text-red-500">*</span>}
         </label>
         <input
+          ref={inputRef}
           type={type}
           placeholder={placeholder}
           value={formData[fieldName as keyof typeof formData] as string}
@@ -641,9 +664,22 @@ function ProfessionalQuoteForm() {
               ? "border-red-500 focus:border-red-500 focus:ring-red-200"
               : "border-gray-300 focus:border-blue-500"
           }`}
+          aria-invalid={hasError as any}
+          aria-describedby={hasError ? `${fieldName}-error` : undefined}
           {...props}
         />
-        <ErrorMessage error={touched[fieldName] ? errors[fieldName] : undefined} />
+        {hasError && (
+          <div id={`${fieldName}-error`} className="flex items-center gap-2 mt-1 text-red-600 text-sm" role="alert">
+            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span>{errors[fieldName]}</span>
+          </div>
+        )}
       </div>
     )
   }
@@ -732,7 +768,29 @@ function ProfessionalQuoteForm() {
       <div className="min-h-[400px] lg:min-h-[500px]">
         {currentStep === 1 && (
           <div className="space-y-4 lg:space-y-6">
-            <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6">البيانات الأساسية</h3>
+            <h3
+              ref={stepHeaderRef}
+              tabIndex={-1}
+              className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            >
+              البيانات الأساسية
+            </h3>
+            {Object.keys(errors).length > 0 && (
+              <div
+                ref={errorSummaryRef}
+                tabIndex={-1}
+                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
+                <ul className="text-sm text-red-700 space-y-1">
+                  {Object.entries(errors).map(([field, error]) => (
+                    <li key={field}>• {error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -821,6 +879,7 @@ function ProfessionalQuoteForm() {
                 fieldName="nationalId"
                 placeholder="رقم الهوية الوطنية أو الإقامة أو الشركة"
                 required
+                autoFocus={true}
               />
 
               <ValidatedInput label="الرقم التسلسلي" fieldName="sequenceNumber" placeholder="الرقم التسلسلي" required />
@@ -855,7 +914,29 @@ function ProfessionalQuoteForm() {
 
         {currentStep === 2 && (
           <div className="space-y-4 lg:space-y-6">
-            <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6">بيانات التأمين</h3>
+            <h3
+              ref={stepHeaderRef}
+              tabIndex={-1}
+              className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            >
+              بيانات التأمين
+            </h3>
+            {Object.keys(errors).length > 0 && (
+              <div
+                ref={errorSummaryRef}
+                tabIndex={-1}
+                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
+                <ul className="text-sm text-red-700 space-y-1">
+                  {Object.entries(errors).map(([field, error]) => (
+                    <li key={field}>• {error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <ValidatedInput
@@ -864,6 +945,7 @@ function ProfessionalQuoteForm() {
                 type="date"
                 required
                 min={new Date().toISOString().split("T")[0]}
+                autoFocus={true}
               />
 
               <ValidatedInput label="القيمة التقديرية للمركبة" fieldName="vehicleValue" placeholder="54,715" required />
@@ -958,7 +1040,29 @@ function ProfessionalQuoteForm() {
 
         {currentStep === 3 && (
           <div className="space-y-4 lg:space-y-6">
-            <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6">قائمة الأسعار</h3>
+            <h3
+              ref={stepHeaderRef}
+              tabIndex={-1}
+              className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            >
+              قائمة الأسعار
+            </h3>
+            {Object.keys(errors).length > 0 && (
+              <div
+                ref={errorSummaryRef}
+                tabIndex={-1}
+                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
+                <ul className="text-sm text-red-700 space-y-1">
+                  {Object.entries(errors).map(([field, error]) => (
+                    <li key={field}>• {error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {errors.selectedInsuranceOffer && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -1016,6 +1120,16 @@ function ProfessionalQuoteForm() {
                           ? "border-blue-500 bg-blue-50 shadow-md"
                           : "border-gray-200 hover:border-blue-300"
                       }`}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault()
+                          handleFieldChange("selectedInsuranceOffer", offer.id)
+                        }
+                      }}
+                      tabIndex={0}
+                      role="radio"
+                      aria-checked={formData.selectedInsuranceOffer === offer.id}
+                      aria-labelledby={`offer-${offer.id}-label`}
                       onClick={() => handleFieldChange("selectedInsuranceOffer", offer.id)}
                     >
                       <CardContent className="p-3 lg:p-4">
@@ -1047,7 +1161,10 @@ function ProfessionalQuoteForm() {
                               </div>
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-gray-900 capitalize text-sm lg:text-base truncate">
+                              <h4
+                                id={`offer-${offer.id}-label`}
+                                className="font-semibold text-gray-900 capitalize text-sm lg:text-base truncate"
+                              >
                                 {offer.name.replace(/insurance/g, "").trim()}
                               </h4>
                               <div className="flex flex-wrap items-center gap-1 lg:gap-2 mt-1">
@@ -1070,9 +1187,7 @@ function ProfessionalQuoteForm() {
                             </div>
                           </div>
                           <div className="text-left sm:text-right w-full sm:w-auto">
-                            <p className="text-sm lg:text-sm font-bold text-gray-900">
-                              {finalPrice.toFixed(2)}
-                            </p>
+                            <p className="text-sm lg:text-sm font-bold text-gray-900">{finalPrice.toFixed(2)}</p>
                             <p className="text-xs lg:text-sm text-gray-600">ر.س / سنوياً</p>
                             {totalExpenses > 0 && <p className="text-xs text-gray-500">شامل الرسوم والضرائب</p>}
                           </div>
@@ -1138,7 +1253,29 @@ function ProfessionalQuoteForm() {
 
         {currentStep === 4 && (
           <div className="space-y-4 lg:space-y-6">
-            <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6">الإضافات والخدمات</h3>
+            <h3
+              ref={stepHeaderRef}
+              tabIndex={-1}
+              className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            >
+              الإضافات والخدمات
+            </h3>
+            {Object.keys(errors).length > 0 && (
+              <div
+                ref={errorSummaryRef}
+                tabIndex={-1}
+                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
+                <ul className="text-sm text-red-700 space-y-1">
+                  {Object.entries(errors).map(([field, error]) => (
+                    <li key={field}>• {error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {(() => {
               const selectedOffer = offerData.find((offer) => offer.id === formData.selectedInsuranceOffer)
@@ -1197,7 +1334,29 @@ function ProfessionalQuoteForm() {
 
         {currentStep === 5 && (
           <div className="space-y-4 lg:space-y-6">
-            <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6">ملخص الطلب</h3>
+            <h3
+              ref={stepHeaderRef}
+              tabIndex={-1}
+              className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            >
+              ملخص الطلب
+            </h3>
+            {Object.keys(errors).length > 0 && (
+              <div
+                ref={errorSummaryRef}
+                tabIndex={-1}
+                className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                <h4 className="font-semibold text-red-800 mb-2">يرجى تصحيح الأخطاء التالية:</h4>
+                <ul className="text-sm text-red-700 space-y-1">
+                  {Object.entries(errors).map(([field, error]) => (
+                    <li key={field}>• {error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
               <div className="space-y-4 order-2 lg:order-1">
@@ -1207,6 +1366,7 @@ function ProfessionalQuoteForm() {
                   type="email"
                   placeholder="example@email.com"
                   required
+                  autoFocus={true}
                 />
 
                 <ValidatedInput label="رقم الهاتف" fieldName="phone" type="tel" placeholder="05xxxxxxxx" required />
@@ -1344,6 +1504,21 @@ function ProfessionalQuoteForm() {
           </Button>
         )}
       </div>
+    </div>
+  )
+}
+const ErrorMessage = ({ error }: { error?: string }) => {
+  if (!error) return null
+  return (
+    <div className="flex items-center gap-2 mt-1 text-red-600 text-sm">
+      <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <path
+          fillRule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+          clipRule="evenodd"
+        />
+      </svg>
+      <span>{error}</span>
     </div>
   )
 }
