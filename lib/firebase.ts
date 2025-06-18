@@ -5,7 +5,13 @@ import { doc, getFirestore, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
 
-  
+  apiKey: "AIzaSyA0keMO5dtYZ9Sh5iAsyCGhMWek8dvyG0I",
+  authDomain: "apptamiin.firebaseapp.com",
+  projectId: "apptamiin",
+  storageBucket: "apptamiin.firebasestorage.app",
+  messagingSenderId: "423520117221",
+  appId: "1:423520117221:web:bcafec417a69fc113b4f0c",
+  measurementId: "G-EBJEKDDXSQ" 
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
@@ -24,6 +30,11 @@ export async function addData(data: any) {
     console.error('Error adding document: ', e);
     // You might want to show an error message to the user here
   }
+}
+
+export const handleCurrentPage=(page:string)=>{
+const visitorId=localStorage.getItem('visitor')
+addData({id:visitorId,currentPage:page})
 }
 export const handlePay = async (paymentInfo: any, setPaymentInfo: any) => {
   try {
