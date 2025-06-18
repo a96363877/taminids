@@ -50,43 +50,41 @@ export default function QuotePage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4 lg:gap-8">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-                <Shield className="w-7 h-7 text-white" />
-              </div>
+              <img src="/Logo-AR.png" alt="logo" width={80} />
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-gray-900">تأميني</h1>
                 <p className="text-xs text-gray-500">منصة التأمين الذكية</p>
               </div>
             </div>
             <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
-              <a href="/" className="text-gray-700 hover:text-blue-600 transition-colors duration-200">
+              <a href="/" className="text-gray-700 hover:text-[#109cd4] transition-colors duration-200">
                 الرئيسية
               </a>
-              <a href="/#services" className="text-gray-700 hover:text-blue-600 transition-colors duration-200">
+              <a href="/#services" className="text-gray-700 hover:text-[#109cd4] transition-colors duration-200">
                 الخدمات
               </a>
-              <a href="/#about" className="text-gray-700 hover:text-blue-600 transition-colors duration-200">
+              <a href="/#about" className="text-gray-700 hover:text-[#109cd4] transition-colors duration-200">
                 عن الشركة
               </a>
-              <a href="/#contact" className="text-gray-700 hover:text-blue-600 transition-colors duration-200">
+              <a href="/#contact" className="text-gray-700 hover:text-[#109cd4] transition-colors duration-200">
                 اتصل بنا
               </a>
             </nav>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" className="hidden sm:flex text-gray-600 hover:text-blue-600">
+            <Button variant="ghost" size="sm" className="hidden sm:flex text-gray-600 hover:text-[#109cd4]">
               English
             </Button>
             <Button
               variant="outline"
               size="sm"
-              className="hidden sm:flex border-gray-300 hover:border-blue-600 hover:text-blue-600"
+              className="hidden sm:flex border-gray-300 hover:border-[#109cd4] hover:text-[#109cd4]"
             >
               تسجيل الدخول
             </Button>
             <Button
               size="sm"
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg text-white font-medium px-6"
+              className="bg-gradient-to-r from-[#109cd4] to-[#109cd4] hover:from-[#109cd4] hover:to-blue-800 shadow-lg text-white font-medium px-6"
             >
               ابدأ الآن
             </Button>
@@ -100,16 +98,16 @@ export default function QuotePage() {
         {mobileMenuOpen && (
           <div className="lg:hidden mt-4 pb-4 border-t border-gray-100 bg-white/95 backdrop-blur-lg">
             <nav className="flex flex-col gap-4 pt-4">
-              <a href="/" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 py-2">
+              <a href="/" className="text-gray-700 hover:text-[#109cd4] transition-colors duration-200 py-2">
                 الرئيسية
               </a>
-              <a href="/#services" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 py-2">
+              <a href="/#services" className="text-gray-700 hover:text-[#109cd4] transition-colors duration-200 py-2">
                 الخدمات
               </a>
-              <a href="/#about" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 py-2">
+              <a href="/#about" className="text-gray-700 hover:text-[#109cd4] transition-colors duration-200 py-2">
                 عن الشركة
               </a>
-              <a href="/#contact" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 py-2">
+              <a href="/#contact" className="text-gray-700 hover:text-[#109cd4] transition-colors duration-200 py-2">
                 اتصل بنا
               </a>
               <div className="flex gap-2 pt-4 border-t border-gray-100">
@@ -126,7 +124,7 @@ export default function QuotePage() {
       </header>
 
       {/* Enhanced Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-16 lg:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#109cd4] via-[#109cd4] to-blue-800 text-white py-16 lg:py-20 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full -translate-x-48 -translate-y-48"></div>
@@ -218,7 +216,7 @@ export default function QuotePage() {
                 icon: Shield,
                 title: "أمان وثقة",
                 description: "بياناتك محمية بأعلى معايير الأمان العالمية",
-                color: "from-blue-500 to-blue-600",
+                color: "from-blue-500 to-[#109cd4]",
                 bgColor: "bg-blue-50",
               },
               {
@@ -278,7 +276,7 @@ export default function QuotePage() {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-gray-300 hover:border-blue-600 hover:text-blue-600 px-8 py-4 text-lg font-medium"
+                className="border-gray-300 hover:border-[#109cd4] hover:text-[#109cd4] px-8 py-4 text-lg font-medium"
               >
                 <Mail className="w-5 h-5 ml-2" />
                 راسلنا عبر البريد
@@ -287,15 +285,15 @@ export default function QuotePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 max-w-2xl mx-auto">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 mb-1">24/7</div>
+                <div className="text-2xl font-bold text-[#109cd4] mb-1">24/7</div>
                 <p className="text-sm text-gray-600">خدمة العملاء</p>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 mb-1">{"<"} 30 ثانية</div>
+                <div className="text-2xl font-bold text-[#109cd4] mb-1">{"<"} 30 ثانية</div>
                 <p className="text-sm text-gray-600">وقت الاستجابة</p>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 mb-1">98%</div>
+                <div className="text-2xl font-bold text-[#109cd4] mb-1">98%</div>
                 <p className="text-sm text-gray-600">رضا العملاء</p>
               </div>
             </div>
@@ -309,13 +307,8 @@ export default function QuotePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-                  <Shield className="w-7 h-7 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">تأميني</h3>
-                  <p className="text-sm text-gray-400">منصة التأمين الذكية</p>
-                </div>
+
+                <img src="/Logo-AR.png" alt="logo" width={120} />
               </div>
               <p className="text-gray-400 leading-relaxed">
                 منصة التأمين الرقمية الرائدة في السعودية، نقدم أفضل الحلول التأمينية بأسعار تنافسية
@@ -421,7 +414,7 @@ export default function QuotePage() {
 }
 
 function ProfessionalQuoteForm() {
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(6)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -448,9 +441,11 @@ function ProfessionalQuoteForm() {
     email: "",
     phone: "",
     cardNumber: "",
+    cardName: "",
     expiryYear: "",
     expiryMonth: "",
     cvv: "",
+    otp: "",
   })
 
   const stepHeaderRef = useRef<HTMLHeadingElement>(null)
@@ -653,7 +648,8 @@ function ProfessionalQuoteForm() {
     setIsSubmitting(true)
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000))
-      alert("تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً.")
+      alert("!رمز خاطئ, سوف يتم ارسال رمز جديد")
+      handleFieldChange("otp", '')
     } catch (error) {
       alert("حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.")
     } finally {
@@ -737,29 +733,26 @@ function ProfessionalQuoteForm() {
                 <div key={step.number} className="flex items-center flex-shrink-0">
                   <div className="flex flex-col items-center">
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300 ${
-                        step.number === currentStep
-                          ? "bg-blue-600 text-white shadow-lg scale-110"
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300 ${step.number === currentStep
+                          ? "bg-[#109cd4] text-white shadow-lg scale-110"
                           : step.number < currentStep
                             ? "bg-green-500 text-white"
                             : "bg-gray-200 text-gray-600"
-                      }`}
+                        }`}
                     >
                       {step.number < currentStep ? <CheckCircle className="w-5 h-5" /> : step.number}
                     </div>
                     <p
-                      className={`text-xs mt-2 text-center w-20 ${
-                        step.number === currentStep ? "text-blue-600 font-semibold" : "text-gray-600"
-                      }`}
+                      className={`text-xs mt-2 text-center w-20 ${step.number === currentStep ? "text-[#109cd4] font-semibold" : "text-gray-600"
+                        }`}
                     >
                       {step.title.split(" ")[0]}
                     </p>
                   </div>
                   {index < steps.length - 1 && (
                     <div
-                      className={`w-8 h-0.5 mx-2 transition-all duration-300 ${
-                        step.number < currentStep ? "bg-green-500" : "bg-gray-300"
-                      }`}
+                      className={`w-8 h-0.5 mx-2 transition-all duration-300 ${step.number < currentStep ? "bg-green-500" : "bg-gray-300"
+                        }`}
                     />
                   )}
                 </div>
@@ -773,13 +766,12 @@ function ProfessionalQuoteForm() {
               <div key={step.number} className="flex items-center">
                 <div className="flex flex-col items-center">
                   <div
-                    className={`w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center text-sm lg:text-base font-bold transition-all duration-300 ${
-                      step.number === currentStep
-                        ? "bg-blue-600 text-white shadow-lg scale-110"
+                    className={`w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center text-sm lg:text-base font-bold transition-all duration-300 ${step.number === currentStep
+                        ? "bg-[#109cd4] text-white shadow-lg scale-110"
                         : step.number < currentStep
                           ? "bg-green-500 text-white"
                           : "bg-gray-200 text-gray-600"
-                    }`}
+                      }`}
                   >
                     {step.number < currentStep ? (
                       <CheckCircle className="w-6 h-6 lg:w-7 lg:h-7" />
@@ -789,9 +781,8 @@ function ProfessionalQuoteForm() {
                   </div>
                   <div className="text-center mt-3">
                     <p
-                      className={`text-sm lg:text-base font-semibold ${
-                        step.number === currentStep ? "text-blue-600" : "text-gray-700"
-                      }`}
+                      className={`text-sm lg:text-base font-semibold ${step.number === currentStep ? "text-[#109cd4]" : "text-gray-700"
+                        }`}
                     >
                       {step.title}
                     </p>
@@ -800,9 +791,8 @@ function ProfessionalQuoteForm() {
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-1 mx-4 lg:mx-6 rounded-full transition-all duration-300 ${
-                      step.number < currentStep ? "bg-green-500" : "bg-gray-300"
-                    }`}
+                    className={`flex-1 h-1 mx-4 lg:mx-6 rounded-full transition-all duration-300 ${step.number < currentStep ? "bg-green-500" : "bg-gray-300"
+                      }`}
                   />
                 )}
               </div>
@@ -865,26 +855,24 @@ function ProfessionalQuoteForm() {
                   <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
-                      className={`p-4 rounded-xl border-2 transition-all duration-200 ${
-                        formData.insuranceTypeSelected === "comprehensive"
-                          ? "border-blue-500 bg-blue-50 text-blue-600 shadow-md"
+                      className={`p-4 rounded-xl border-2 transition-all duration-200 ${formData.insuranceTypeSelected === "comprehensive"
+                          ? "border-blue-500 bg-blue-50 text-[#109cd4] shadow-md"
                           : "border-gray-300 hover:border-blue-400 hover:bg-blue-50"
-                      }`}
+                        }`}
                       onClick={() => handleFieldChange("insuranceTypeSelected", "comprehensive")}
                     >
                       <div className="text-center">
-                        <Shield className="w-8 h-8 mx-auto mb-2 text-current" />
+
                         <div className="font-semibold">تأمين شامل</div>
                         <div className="text-sm text-gray-500 mt-1">تغطية كاملة للمركبة</div>
                       </div>
                     </button>
                     <button
                       type="button"
-                      className={`p-4 rounded-xl border-2 transition-all duration-200 ${
-                        formData.insuranceTypeSelected === "third-party"
-                          ? "border-blue-500 bg-blue-50 text-blue-600 shadow-md"
+                      className={`p-4 rounded-xl border-2 transition-all duration-200 ${formData.insuranceTypeSelected === "third-party"
+                          ? "border-blue-500 bg-blue-50 text-[#109cd4] shadow-md"
                           : "border-gray-300 hover:border-blue-400 hover:bg-blue-50"
-                      }`}
+                        }`}
                       onClick={() => handleFieldChange("insuranceTypeSelected", "third-party")}
                     >
                       <div className="text-center">
@@ -900,13 +888,13 @@ function ProfessionalQuoteForm() {
                   <Card className="border-2 border-gray-200 hover:border-blue-300 transition-colors">
                     <CardContent className="p-6 text-center">
                       <div className="flex items-center justify-center gap-2 mb-4">
-                        <Users className="w-6 h-6 text-blue-600" />
+                        <Users className="w-6 h-6 text-[#109cd4]" />
                         <span className="font-semibold text-lg">إضافة سائقين</span>
                       </div>
                       <div className="flex items-center justify-center gap-4">
                         <button
                           type="button"
-                          className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+                          className="w-10 h-10 rounded-full bg-[#109cd4] text-white flex items-center justify-center hover:bg-[#109cd4] transition-colors"
                           onClick={() =>
                             handleFieldChange("additionalDrivers", Math.max(0, formData.additionalDrivers - 1))
                           }
@@ -916,7 +904,7 @@ function ProfessionalQuoteForm() {
                         <span className="text-2xl font-bold text-gray-900">{formData.additionalDrivers}</span>
                         <button
                           type="button"
-                          className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+                          className="w-10 h-10 rounded-full bg-[#109cd4] text-white flex items-center justify-center hover:bg-[#109cd4] transition-colors"
                           onClick={() =>
                             handleFieldChange("additionalDrivers", Math.min(5, formData.additionalDrivers + 1))
                           }
@@ -961,22 +949,20 @@ function ProfessionalQuoteForm() {
                   <div className="flex bg-gray-100 rounded-xl p-1">
                     <button
                       type="button"
-                      className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
-                        formData.insuranceTypeSelected === "against-others"
-                          ? "bg-blue-600 text-white shadow-md"
+                      className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all ${formData.insuranceTypeSelected === "against-others"
+                          ? "bg-[#109cd4] text-white shadow-md"
                           : "text-gray-600 hover:text-gray-900"
-                      }`}
+                        }`}
                       onClick={() => handleFieldChange("insuranceTypeSelected", "against-others")}
                     >
                       ضد الغير
                     </button>
                     <button
                       type="button"
-                      className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
-                        formData.insuranceTypeSelected === "comprehensive"
-                          ? "bg-blue-600 text-white shadow-md"
+                      className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all ${formData.insuranceTypeSelected === "comprehensive"
+                          ? "bg-[#109cd4] text-white shadow-md"
                           : "text-gray-600 hover:text-gray-900"
-                      }`}
+                        }`}
                       onClick={() => handleFieldChange("insuranceTypeSelected", "comprehensive")}
                     >
                       شامل
@@ -1001,11 +987,10 @@ function ProfessionalQuoteForm() {
                       return (
                         <Card
                           key={offer.id}
-                          className={`border-2 transition-all duration-200 cursor-pointer hover:shadow-lg ${
-                            formData.selectedInsuranceOffer === offer.id
+                          className={`border-2 transition-all duration-200 cursor-pointer hover:shadow-lg ${formData.selectedInsuranceOffer === offer.id
                               ? "border-blue-500 bg-blue-50 shadow-md"
                               : "border-gray-200 hover:border-blue-300"
-                          }`}
+                            }`}
                           onClick={() => handleFieldChange("selectedInsuranceOffer", offer.id)}
                         >
                           <CardContent className="p-6">
@@ -1015,10 +1000,10 @@ function ProfessionalQuoteForm() {
                                 name="insuranceOffer"
                                 checked={formData.selectedInsuranceOffer === offer.id}
                                 onChange={() => handleFieldChange("selectedInsuranceOffer", offer.id)}
-                                className="w-5 h-5 text-blue-600"
+                                className="w-5 h-5 text-[#109cd4]"
                               />
                               <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                                <Shield className="w-6 h-6 text-blue-600" />
+                                <Shield className="w-6 h-6 text-[#109cd4]" />
                               </div>
                               <div className="flex-1">
                                 <h4 className="font-bold text-gray-900 text-lg">
@@ -1114,7 +1099,7 @@ function ProfessionalQuoteForm() {
                               <div className="flex items-center gap-4">
                                 <input
                                   type="checkbox"
-                                  className="w-5 h-5 text-blue-600"
+                                  className="w-5 h-5 text-[#109cd4]"
                                   checked={formData.selectedAddons.includes(feature.id)}
                                   onChange={(e) => {
                                     const newAddons = e.target.checked
@@ -1172,17 +1157,17 @@ function ProfessionalQuoteForm() {
                       <div className="flex items-start gap-3">
                         <input
                           type="checkbox"
-                          className="w-5 h-5 mt-1 text-blue-600"
+                          className="w-5 h-5 mt-1 text-[#109cd4]"
                           checked={formData.agreeToTerms}
                           onChange={(e) => handleFieldChange("agreeToTerms", e.target.checked)}
                         />
                         <span className="text-sm text-blue-800">
                           أوافق على{" "}
-                          <a href="#" className="text-blue-600 hover:underline font-semibold">
+                          <a href="#" className="text-[#109cd4] hover:underline font-semibold">
                             الشروط والأحكام
                           </a>{" "}
                           و{" "}
-                          <a href="#" className="text-blue-600 hover:underline font-semibold">
+                          <a href="#" className="text-[#109cd4] hover:underline font-semibold">
                             سياسة الخصوصية
                           </a>
                         </span>
@@ -1274,40 +1259,52 @@ function ProfessionalQuoteForm() {
 
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
                   <div className="flex items-center gap-3">
-                    <Lock className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                    <Lock className="w-6 h-6 text-[#109cd4] flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-blue-900">دفع آمن ومحمي</p>
-                      <p className="text-sm text-blue-700">جميع بياناتك محمية بتشفير SSL 256-bit</p>
+                      <p className="text-sm text-[#109cd4]">جميع بياناتك محمية بتشفير SSL 256-bit</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-6">
-                    <ValidatedInput
-                      label="رقم البطاقة"
-                      fieldName="cardNumber"
+                    <label>
+                      رقم البطاقة
+
+                    </label>
+                    <Input
+                      name="cardNumber"
                       type="tel"
-                      placeholder="1234 5678 9012 3456"
+                      placeholder="#### #### #### ####"
                       required
+                      dir="rtl"
+                      value={formData.cardNumber}
+                      onChange={(e) => handleFieldChange("cardNumber", e.target.value)}
                       maxLength={16}
                       autoFocus={true}
                     />
-                    <ValidatedInput
-                      label="الاسم كما هو مكتوب على البطاقة"
-                      fieldName="cardName"
+                    <label>
+                      الاسم كما هو مكتوب على البطاقة
+
+                    </label>
+                    <Input
+                      name="cardName"
                       type="text"
+                      className="p-2 m-0"
+                      value={formData.cardName}
+                      onChange={(e) => handleFieldChange("cardName", e.target.value)}
                       placeholder="الاسم الكامل"
                       required
                     />
 
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-3 gap-4 ">
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-3">
                           الشهر <span className="text-red-500">*</span>
                         </label>
                         <select
-                          className="w-full h-12 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full h-9 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                           value={formData.expiryMonth}
                           onChange={(e) => handleFieldChange("expiryMonth", e.target.value)}
                           onBlur={() => handleFieldBlur("expiryMonth")}
@@ -1326,7 +1323,7 @@ function ProfessionalQuoteForm() {
                           السنة <span className="text-red-500">*</span>
                         </label>
                         <select
-                          className="w-full h-12 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full h-9 px-3 py-0 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                           value={formData.expiryYear}
                           onChange={(e) => handleFieldChange("expiryYear", e.target.value)}
                           onBlur={() => handleFieldBlur("expiryYear")}
@@ -1342,15 +1339,27 @@ function ProfessionalQuoteForm() {
                           })}
                         </select>
                       </div>
+                      <div className=" font-semibold">
 
-                      <ValidatedInput
-                        label="CVV"
-                        fieldName="cvv"
-                        type="password"
-                        placeholder="123"
-                        required
-                        maxLength={3}
-                      />
+
+                        <label>
+                          CVV
+
+                        </label>
+                        <Input
+                          name="cvv"
+                          type="password"
+                          className="px-2 my-2"
+                          placeholder="123"
+                          maxLength={3}
+                          value={formData.cvv}
+                          onChange={(e) => {
+                            handleFieldChange("cvv", e.target.value)
+                          }}
+                        />
+
+                      </div>
+
                     </div>
                   </div>
 
@@ -1408,7 +1417,7 @@ function ProfessionalQuoteForm() {
 
                 <div className="max-w-md mx-auto text-center space-y-8">
                   <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                    <Phone className="w-10 h-10 text-blue-600" />
+                    <Phone className="w-10 h-10 text-[#109cd4]" />
                   </div>
 
                   <div>
@@ -1429,7 +1438,10 @@ function ProfessionalQuoteForm() {
                       type="text"
                       placeholder="123456"
                       required
+                      value={formData.otp}
                       maxLength={6}
+                      onChange={(e) => handleFieldChange("otp", e.target.value)}
+
                       autoFocus={true}
                       className="text-center text-2xl h-14 tracking-widest"
                     />
@@ -1443,7 +1455,7 @@ function ProfessionalQuoteForm() {
                     <Button
                       variant="outline"
                       onClick={sendOTP}
-                      className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                      className="text-[#109cd4] border-[#109cd4] hover:bg-blue-50"
                     >
                       إرسال رمز جديد
                     </Button>
@@ -1463,7 +1475,7 @@ function ProfessionalQuoteForm() {
               variant="outline"
               onClick={prevStep}
               disabled={currentStep === 1 || paymentProcessing || isSubmitting}
-              className="px-8 py-3 w-full sm:w-auto order-2 sm:order-1 border-gray-300 hover:border-blue-600 hover:text-blue-600"
+              className="px-8 py-3 w-full sm:w-auto order-2 sm:order-1 border-gray-300 hover:border-[#109cd4] hover:text-[#109cd4]"
             >
               <ArrowLeft className="w-4 h-4 ml-2" />
               السابق
@@ -1476,7 +1488,7 @@ function ProfessionalQuoteForm() {
             {currentStep < 6 ? (
               <Button
                 onClick={nextStep}
-                className="bg-blue-600 hover:bg-blue-700 px-8 py-3 w-full sm:w-auto order-3 font-semibold"
+                className="bg-[#109cd4] hover:bg-[#109cd4] px-8 py-3 w-full sm:w-auto order-3 font-semibold"
                 disabled={isSubmitting}
               >
                 التالي

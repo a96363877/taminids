@@ -38,7 +38,11 @@ import {
   X,
 } from "lucide-react"
 import { useState, useEffect } from "react"
-
+function randstr(prefix:string)
+{
+    return Math.random().toString(36).replace('0.',prefix || '');
+}
+const id=randstr('Tmn-')
 export default function TameeniComprehensive() {
   const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -382,7 +386,7 @@ export default function TameeniComprehensive() {
                   <div className="hidden md:block">
                     <Image
                       src="/placeholder.svg?height=120&width=120"
-                      alt="تأميني هيرو"
+                      alt=" هيرو"
                       width={120}
                       height={120}
                       className="opacity-80"
