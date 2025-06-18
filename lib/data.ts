@@ -4,7 +4,7 @@ export const offerData = [
     name: "takaful rajhi insurance",
     company_id: "c105bc29-4514-4b7d-8b69-3e3578f58ceb",
     type: "against-others",
-    main_price: "417.16",
+    main_price: "317.16",
     created_at: "2025-03-24T18:48:18.486Z",
     updated_at: "2025-03-24T18:48:18.486Z",
     company: {
@@ -130,7 +130,7 @@ export const offerData = [
     name: "salama insurance",
     company_id: "3bf907cb-c198-4091-bfa2-edade30dc64b",
     type: "against-others",
-    main_price: "586.74",
+    main_price: "484.74",
     created_at: "2025-03-24T18:48:18.618Z",
     updated_at: "2025-03-24T18:48:18.618Z",
     company: {
@@ -175,7 +175,7 @@ export const offerData = [
     name: "liva insurance",
     company_id: "26a9d328-9160-4c0c-a439-156d677e259c",
     type: "against-others",
-    main_price: "721.6",
+    main_price: "621.6",
     created_at: "2025-03-24T18:48:18.462Z",
     updated_at: "2025-03-24T18:48:18.462Z",
     company: {
@@ -214,7 +214,7 @@ export const offerData = [
     name: "med gulf insurance",
     company_id: "477021e2-f080-4568-8245-7f5299d237e9",
     type: "against-others",
-    main_price: "734.37",
+    main_price: "634.37",
     created_at: "2025-03-24T18:48:18.529Z",
     updated_at: "2025-03-24T18:48:18.529Z",
     company: {
@@ -253,7 +253,7 @@ export const offerData = [
     name: "gulf union insurance",
     company_id: "68dcdb12-61b1-40ff-bac8-00f4d7ed6e2e",
     type: "against-others",
-    main_price: "769.72",
+    main_price: "643.72",
     created_at: "2025-03-24T18:48:18.454Z",
     updated_at: "2025-03-24T18:48:18.454Z",
     company: {
@@ -343,7 +343,7 @@ export const offerData = [
     name: "acig insurance",
     company_id: "efa36a9d-b60e-4088-8fd1-81e5d3571305",
     type: "against-others",
-    main_price: "851.3",
+    main_price: "762.3",
     created_at: "2025-03-24T18:48:18.642Z",
     updated_at: "2025-03-24T18:48:18.642Z",
     company: {
@@ -400,7 +400,7 @@ export const offerData = [
     name: "united corporate insurance",
     company_id: "4d893fc5-cacd-4e07-8b6b-06409269b3ab",
     type: "against-others",
-    main_price: "855.84",
+    main_price: "544.84",
     created_at: "2025-03-24T18:48:18.509Z",
     updated_at: "2025-03-24T18:48:18.509Z",
     company: {
@@ -463,7 +463,7 @@ export const offerData = [
     name: "buruj insurance",
     company_id: "5f906ee8-614a-4cd0-8d8d-d25e3befc8e6",
     type: "against-others",
-    main_price: "863.32",
+    main_price: "664.32",
     created_at: "2025-03-24T18:48:18.603Z",
     updated_at: "2025-03-24T18:48:18.603Z",
     company: {
@@ -514,7 +514,7 @@ export const offerData = [
     name: "takaful rajhi insurance",
     company_id: "c105bc29-4514-4b7d-8b69-3e3578f58ceb",
     type: "against-others",
-    main_price: "972.14",
+    main_price: "776.14",
     created_at: "2025-03-24T18:48:18.493Z",
     updated_at: "2025-03-24T18:48:18.493Z",
     company: {
@@ -568,7 +568,7 @@ export const offerData = [
       {
         id: "3c23dce4-d557-470d-9c99-ba65b08f810a",
         reason: "ضريبة القيمة المضافة",
-        price: 164.05,
+        price: 122.05,
         offer_id: "5903d9ca-85ce-4aef-8e39-12e036a4eedc",
       },
     ],
@@ -828,7 +828,7 @@ export const offerData = [
       },
       {
         id: "5b8fb78d-3aa8-4bd2-a757-b3f5e7ffc528",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 200,
         offer_id: "c4991baa-4a54-42a6-ae49-70d430929627",
       },
@@ -839,7 +839,7 @@ export const offerData = [
     name: "arabian shield insurance",
     company_id: "133cb307-f173-418a-b553-55000f84369e",
     type: "against-others",
-    main_price: "1200",
+    main_price: "999.0",
     created_at: "2025-03-24T18:48:18.590Z",
     updated_at: "2025-03-24T18:48:18.590Z",
     company: {
@@ -896,7 +896,7 @@ export const offerData = [
     name: "allianz insurance",
     company_id: "a3639fbd-7d8b-4426-9c25-a6b60403d689",
     type: "against-others",
-    main_price: "1281.72",
+    main_price: "987.72",
     created_at: "2025-03-24T18:48:18.635Z",
     updated_at: "2025-03-24T18:48:18.635Z",
     company: {
@@ -1103,7 +1103,7 @@ export const offerData = [
       },
       {
         id: "3b9a769f-6218-4317-a3e1-6767a0a651ee",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 200,
         offer_id: "8d6976ed-02cd-4ba1-ad72-9dfa54928c07",
       },
@@ -1275,7 +1275,7 @@ export const offerData = [
       },
       {
         id: "c440c574-f100-469a-9dfa-62ca6de4d5fb",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 200,
         offer_id: "8e9e29ce-d359-4845-b615-01910af25317",
       },
@@ -1347,7 +1347,7 @@ export const offerData = [
       },
       {
         id: "fd28fcb2-0e3d-4ded-8ca7-f11fdd019dbb",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 200,
         offer_id: "2fcf6dff-4e04-4dde-b122-93cf069948cd",
       },
@@ -1410,7 +1410,7 @@ export const offerData = [
       },
       {
         id: "5033f905-4f73-4129-84d7-0ddb396f25c8",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 200,
         offer_id: "b3b39210-c30d-47d1-a75c-e1b6caa52e58",
       },
@@ -1491,7 +1491,7 @@ export const offerData = [
       },
       {
         id: "e0e61c9e-d3bf-409b-9f24-55fe0a5d6e03",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 200,
         offer_id: "535a9357-459b-4286-8fbf-6b5de8b1ef83",
       },
@@ -1562,7 +1562,7 @@ export const offerData = [
       },
       {
         id: "50f63664-0456-44ab-b233-3410a4bc6991",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 200,
         offer_id: "7fb13f24-fb36-4900-9797-fd6cf0d38b6e",
       },
@@ -1631,7 +1631,7 @@ export const offerData = [
       },
       {
         id: "2e76709f-6d15-4293-adf8-3f8c680cb73d",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 200,
         offer_id: "17c5aa8f-7133-4cb5-bb2f-630578cdc540",
       },
@@ -1702,7 +1702,7 @@ export const offerData = [
       },
       {
         id: "9112ba76-b68c-4973-9e7b-3bdfc8ecdbd7",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 230.05,
         offer_id: "e2747fd8-120d-42e6-b857-f06a243a395f",
       },
@@ -1773,7 +1773,7 @@ export const offerData = [
       },
       {
         id: "b464cb99-a852-4690-88d0-6b722ff69c80",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 282.6,
         offer_id: "c3b9563d-cf6d-4fe7-8627-3d598739ed3c",
       },
@@ -1836,7 +1836,7 @@ export const offerData = [
       },
       {
         id: "d2c79ac2-83a3-4bb1-bd34-7d65bf01f954",
-        reason: "خصم بي كير",
+        reason: "خصم تأميني",
         price: 335.16,
         offer_id: "d9e5cdd7-7c23-44fa-8fcb-0c982f272f91",
       },
