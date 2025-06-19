@@ -158,21 +158,21 @@ export default function TameeniComprehensive() {
       role: "مهندس",
       content: "خدمة ممتازة ووفرت لي 35% من قيمة التأمين. التطبيق سهل الاستخدام والدعم الفني رائع.",
       rating: 5,
-      image: "/placeholder.svg?height=60&width=60",
+      image: "/user.png",
     },
     {
       name: "فاطمة العلي",
       role: "طبيبة",
       content: "أفضل منصة تأمين جربتها. المقارنة سريعة والأسعار شفافة. أنصح بها بشدة.",
       rating: 5,
-      image: "/placeholder.svg?height=60&width=60",
+      image: "/user.png",
     },
     {
       name: "خالد السعد",
       role: "رجل أعمال",
       content: "تجربة استثنائية من البداية للنهاية. حصلت على وثيقة التأمين في دقائق معدودة.",
       rating: 5,
-      image: "/placeholder.svg?height=60&width=60",
+      image: "/user.png",
     },
   ]
 
