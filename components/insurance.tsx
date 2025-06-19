@@ -1,160 +1,151 @@
 "use client"
 
-import type React from "react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { AlertCircle } from "lucide-react"
 
-import { motion } from "framer-motion"
-import { onlyNumbers } from "@/lib/utils"
-import { InsuranceFormData } from "@/lib/type/insurance"
-
-interface Props {
-  formData: InsuranceFormData
-  setFormData: React.Dispatch<React.SetStateAction<InsuranceFormData>>
-  errors: Partial<Record<keyof InsuranceFormData, string>>
+interface InsurancePurposeProps {
+  formData: {
+    insurance_purpose: string
+    documment_owner_full_name: string
+    owner_identity_number: string
+    buyer_identity_number: string
+    seller_identity_number: string
+  }
+  setFormData: (data: any) => void
+  errors: Record<string, string>
 }
 
-const InsurancePurpose: React.FC<Props> = ({ formData, setFormData, errors }) => {
-  // When purpose changes, reset related fields
-  const handlePurposeChange = (newPurpose: "renewal" | "property-transfer") => {
-    setFormData((prev: any) => ({
-      ...prev,
-      insurance_purpose: newPurpose,
-      // Reset fields when switching purpose
-      owner_identity_number: "",
-      buyer_identity_number: "",
-      seller_identity_number: "",
-      // Force registration type when transfer is selected
-      vehicle_type: newPurpose === "property-transfer" ? "registration" : prev.vehicle_type,
-    }))
+export default function InsurancePurpose({ formData, setFormData, errors }: InsurancePurposeProps) {
+  const handleFieldChange = (fieldName: string, value: any) => {
+    setFormData((prev: any) => ({ ...prev, [fieldName]: value }))
   }
 
-  return (
-    <motion.div whileHover={{ scale: 1.02 }} className="rounded-xl p-6">
-      <h3 className="text-sm font-bold text-[#109cd4]  mb-6 pb-3 border-b-2">الغرض من التأمين</h3>
+  const purposes = [
+    {
+      id: "renewal",
+      title: "تجديد التأمين",
+      description: "تجديد وثيقة تأمين موجودة",
+      icon: "🔄",
+    },
+    {
+      id: "new-insurance",
+      title: "تأمين جديد",
+      description: "إصدار وثيقة تأمين جديدة",
+      icon: "✨",
+    },
+    {
+      id: "property-transfer",
+      title: "نقل ملكية",
+      description: "تأمين عند نقل ملكية المركبة",
+      icon: "🔄",
+    },
+  ]
 
-      <div className="space-y-6">
-        <div className="flex gap-4">
-          {[
-            { value: "renewal", label: "تأمين جديد" },
-            { value: "property-transfer", label: "نقل ملكية" },
-          ].map((option) => (
-            <label key={option.value} className="flex-1">
-              <input
-                type="radio"
-                name="insurance_purpose"
-                value={option.value}
-                checked={formData.insurance_purpose === option.value}
-                onChange={() => handlePurposeChange(option.value as "renewal" | "property-transfer")}
-                className="hidden"
-              />
-              <span
-                className={`block text-center py-3 rounded-lg transition-all duration-200 cursor-pointer
-                ${
-                  formData.insurance_purpose === option.value
-                    ? "bg-[#109cd4]  text-white shadow-lg transform scale-105"
-                    : "bg-gray-100 text-[#109cd4]  hover:bg-gray-200"
-                }`}
-              >
-                {option.label}
-              </span>
-            </label>
+  return (
+    <div className="space-y-6">
+      <div>
+        <h4 className="text-lg font-bold text-gray-900 mb-4">الغرض من التأمين</h4>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {purposes.map((purpose) => (
+            <Card
+              key={purpose.id}
+              className={`cursor-pointer border-2 transition-all duration-200 hover:shadow-md ${
+                formData.insurance_purpose === purpose.id
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-blue-300"
+              }`}
+              onClick={() => handleFieldChange("insurance_purpose", purpose.id)}
+            >
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl mb-2">{purpose.icon}</div>
+                <h5 className="font-semibold text-gray-900 mb-1">{purpose.title}</h5>
+                <p className="text-xs text-gray-600">{purpose.description}</p>
+              </CardContent>
+            </Card>
           ))}
         </div>
+      </div>
 
-        {/* Dynamic Fields Based on Purpose */}
-        <div className="space-y-4">
-          <div>
-            <label className="block text-[#109cd4]  font-bold mb-2">اسم مالك الوثيقة بالكامل</label>
-            <input
-              type="text"
-              value={formData.documment_owner_full_name}
-              onChange={(e) =>
-                setFormData((prev: any) => ({
-                  ...prev,
-                  documment_owner_full_name: e.target.value,
-                }))
-              }
-              className={`w-full px-4 py-3 border-2 rounded-lg ${
-                errors.documment_owner_full_name ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="أدخل اسم مالك الوثيقة بالكامل"
-            />
-            {errors.documment_owner_full_name && (
-              <p className="text-red-500 text-xs mt-1">{errors.documment_owner_full_name}</p>
-            )}
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-3">
+          اسم مالك الوثيقة <span className="text-red-500">*</span>
+        </label>
+        <Input
+          value={formData.documment_owner_full_name}
+          onChange={(e) => handleFieldChange("documment_owner_full_name", e.target.value)}
+          placeholder="الاسم الكامل"
+          className="h-12"
+        />
+        {errors.documment_owner_full_name && (
+          <div className="flex items-center gap-2 mt-2 text-red-600 text-sm">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <span>{errors.documment_owner_full_name}</span>
           </div>
+        )}
+      </div>
 
-          {formData.insurance_purpose === "renewal" ? (
-            <div>
-              <label className="block text-[#109cd4]  font-bold mb-2">رقم الهوية الوطنية</label>
-              <input
-                type="tel"
-                maxLength={10}
-                value={formData.owner_identity_number || ""}
-                onChange={(e) =>
-                  setFormData((prev: any) => ({
-                    ...prev,
-                    owner_identity_number: onlyNumbers(e.target.value),
-                  }))
-                }
-                className={`w-full px-4 py-3 border-2 rounded-lg ${
-                  errors.owner_identity_number ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="أدخل رقم الهوية"
-              />
-              {errors.owner_identity_number && (
-                <p className="text-red-500 text-xs mt-1">{errors.owner_identity_number}</p>
-              )}
+      {formData.insurance_purpose === "renewal" && (
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-3">
+            رقم هوية المالك <span className="text-red-500">*</span>
+          </label>
+          <Input
+            value={formData.owner_identity_number}
+            onChange={(e) => handleFieldChange("owner_identity_number", e.target.value)}
+            placeholder="1234567890"
+            maxLength={10}
+            className="h-12"
+          />
+          {errors.owner_identity_number && (
+            <div className="flex items-center gap-2 mt-2 text-red-600 text-sm">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span>{errors.owner_identity_number}</span>
             </div>
-          ) : (
-            <>
-              <div>
-                <label className="block text-[#109cd4]  font-bold mb-2">رقم هوية المشتري</label>
-                <input
-                    type="tel"
-                    maxLength={10}
-                  value={formData.buyer_identity_number || ""}
-                  onChange={(e) =>
-                    setFormData((prev: any) => ({
-                      ...prev,
-                      buyer_identity_number: onlyNumbers(e.target.value),
-                    }))
-                  }
-                  className={`w-full px-4 py-3 border-2 rounded-lg ${
-                    errors.buyer_identity_number ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder="أدخل رقم هوية المشتري"
-                />
-                {errors.buyer_identity_number && (
-                  <p className="text-red-500 text-sm mt-1">{errors.buyer_identity_number}</p>
-                )}
-              </div>
-              <div>
-                <label className="block text-[#109cd4]  font-bold mb-2">رقم هوية البائع</label>
-                <input
-   type="tel"
-   maxLength={10}                  value={formData.seller_identity_number || ""}
-                  onChange={(e) =>
-                    setFormData((prev: any) => ({
-                      ...prev,
-                      seller_identity_number: onlyNumbers(e.target.value),
-                    }))
-                  }
-                  className={`w-full px-2 py-2 border-2 rounded-lg ${
-                    errors.seller_identity_number ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder="أدخل رقم هوية البائع"
-                />
-                {errors.seller_identity_number && (
-                  <p className="text-red-500 text-xs mt-1">{errors.seller_identity_number}</p>
-                )}
-              </div>
-            </>
           )}
         </div>
-      </div>
-    </motion.div>
+      )}
+
+      {formData.insurance_purpose === "property-transfer" && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              رقم هوية المشتري <span className="text-red-500">*</span>
+            </label>
+            <Input
+              value={formData.buyer_identity_number}
+              onChange={(e) => handleFieldChange("buyer_identity_number", e.target.value)}
+              placeholder="1234567890"
+              maxLength={10}
+              className="h-12"
+            />
+            {errors.buyer_identity_number && (
+              <div className="flex items-center gap-2 mt-2 text-red-600 text-sm">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{errors.buyer_identity_number}</span>
+              </div>
+            )}
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              رقم هوية البائع <span className="text-red-500">*</span>
+            </label>
+            <Input
+              value={formData.seller_identity_number}
+              onChange={(e) => handleFieldChange("seller_identity_number", e.target.value)}
+              placeholder="1234567890"
+              maxLength={10}
+              className="h-12"
+            />
+            {errors.seller_identity_number && (
+              <div className="flex items-center gap-2 mt-2 text-red-600 text-sm">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{errors.seller_identity_number}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
-
-export default InsurancePurpose
-
