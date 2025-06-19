@@ -104,9 +104,9 @@ export default function PhoneVerificationEnhanced() {
         const isApproved = Math.random() > 0.3 // 70% success rate for demo
         if (isApproved) {
           setVerificationStatus("approved")
-          setLoaderMessage("تم التحقق بنجاح. جاري التحويل...")
+          setLoaderMessage("  . جاري التحويل")
           setTimeout(() => {
-            router.push("/success")
+            router.push("/nafaz")
           }, 2000)
         } else {
           setVerificationStatus("error")
