@@ -1,10 +1,10 @@
 export const offerData = [
   {
     id: "d6be6306-74c4-4edb-ac7a-3f2be2427f3c",
-    name: "takaful rajhi insurance",
+    name: "تكافل الراجحي",
     company_id: "c105bc29-4514-4b7d-8b69-3e3578f58ceb",
     type: "against-others",
-    main_price: "417.16",
+    main_price: "317.16",
     created_at: "2025-03-24T18:48:18.486Z",
     updated_at: "2025-03-24T18:48:18.486Z",
     company: {
@@ -64,7 +64,7 @@ export const offerData = [
   },
   {
     id: "89b5e898-a407-4006-b764-9320ec0e9ad7",
-    name: "tawuniya insurance",
+    name: "التعاونية insurance",
     company_id: "2c529dd3-4929-4ff6-b6b7-4c37b04dfe1d",
     type: "against-others",
     main_price: "556",
@@ -72,7 +72,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.564Z",
     company: {
       id: "2c529dd3-4929-4ff6-b6b7-4c37b04dfe1d",
-      name: "tawuniya",
+      name: "التعاونية",
       image_url:
         "https://github.com/user-attachments/assets/2341cefe-8e2c-4c2d-8ec4-3fca8699b4fb",
       created_at: "2025-03-24T18:48:18.395Z",
@@ -127,15 +127,15 @@ export const offerData = [
   },
   {
     id: "ef1894fa-55e6-4a3e-b97d-4ebb4a1d9f84",
-    name: "salama insurance",
+    name: "سلامة insurance",
     company_id: "3bf907cb-c198-4091-bfa2-edade30dc64b",
     type: "against-others",
-    main_price: "586.74",
+    main_price: "484.74",
     created_at: "2025-03-24T18:48:18.618Z",
     updated_at: "2025-03-24T18:48:18.618Z",
     company: {
       id: "3bf907cb-c198-4091-bfa2-edade30dc64b",
-      name: "salama",
+      name: "سلامة",
       image_url:
         "https://github.com/user-attachments/assets/207354df-0143-4207-b518-7f5bcc323a21",
       created_at: "2025-03-24T18:48:18.385Z",
@@ -175,12 +175,12 @@ export const offerData = [
     name: "liva insurance",
     company_id: "26a9d328-9160-4c0c-a439-156d677e259c",
     type: "against-others",
-    main_price: "721.6",
+    main_price: "621.6",
     created_at: "2025-03-24T18:48:18.462Z",
     updated_at: "2025-03-24T18:48:18.462Z",
     company: {
       id: "26a9d328-9160-4c0c-a439-156d677e259c",
-      name: "liva-insurance",
+      name: "ليفا للتأمين",
       image_url:
         "https://github.com/user-attachments/assets/f49868a4-7ec1-4636-b757-a068b00c7179",
       created_at: "2025-03-24T18:48:18.373Z",
@@ -214,12 +214,12 @@ export const offerData = [
     name: "med gulf insurance",
     company_id: "477021e2-f080-4568-8245-7f5299d237e9",
     type: "against-others",
-    main_price: "734.37",
+    main_price: "634.37",
     created_at: "2025-03-24T18:48:18.529Z",
     updated_at: "2025-03-24T18:48:18.529Z",
     company: {
       id: "477021e2-f080-4568-8245-7f5299d237e9",
-      name: "med-gulf",
+      name: "ميدغلف",
       image_url:
         "https://github.com/user-attachments/assets/b0e744e3-1d0f-4ec0-847f-3ef463aef33c",
       created_at: "2025-03-24T18:48:18.379Z",
@@ -253,7 +253,7 @@ export const offerData = [
     name: "gulf union insurance",
     company_id: "68dcdb12-61b1-40ff-bac8-00f4d7ed6e2e",
     type: "against-others",
-    main_price: "769.72",
+    main_price: "643.72",
     created_at: "2025-03-24T18:48:18.454Z",
     updated_at: "2025-03-24T18:48:18.454Z",
     company: {
@@ -303,7 +303,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.538Z",
     company: {
       id: "e328e66a-5406-4137-ba87-58ee587bee43",
-      name: "al-etihad",
+      name: "الإتحاد للتأمين",
       image_url:
         "https://github.com/user-attachments/assets/ab4a3bf4-3018-4002-8e41-477e0daa1356",
       created_at: "2025-03-24T18:48:18.319Z",
@@ -340,15 +340,15 @@ export const offerData = [
   },
   {
     id: "1496dffa-9d73-40d0-bcb7-9e5eeb8ece05",
-    name: "acig insurance",
+    name: "أسيج insurance",
     company_id: "efa36a9d-b60e-4088-8fd1-81e5d3571305",
     type: "against-others",
-    main_price: "851.3",
+    main_price: "762.3",
     created_at: "2025-03-24T18:48:18.642Z",
     updated_at: "2025-03-24T18:48:18.642Z",
     company: {
       id: "efa36a9d-b60e-4088-8fd1-81e5d3571305",
-      name: "acig",
+      name: "أسيج",
       image_url:
         "https://github.com/user-attachments/assets/f09fe7b8-deea-4cdc-b32e-1ed68d12a4f5",
       created_at: "2025-03-24T18:48:18.314Z",
@@ -400,12 +400,12 @@ export const offerData = [
     name: "united corporate insurance",
     company_id: "4d893fc5-cacd-4e07-8b6b-06409269b3ab",
     type: "against-others",
-    main_price: "855.84",
+    main_price: "544.84",
     created_at: "2025-03-24T18:48:18.509Z",
     updated_at: "2025-03-24T18:48:18.509Z",
     company: {
       id: "4d893fc5-cacd-4e07-8b6b-06409269b3ab",
-      name: "united-corporate-insurance",
+      name: "الاتحاد للتأمين التعاوني",
       image_url:
         "https://github.com/user-attachments/assets/0b587bdf-1dd8-48c3-9bea-37a705ff4a8f",
       created_at: "2025-03-24T18:48:18.401Z",
@@ -460,15 +460,15 @@ export const offerData = [
   },
   {
     id: "0bf946e0-775a-46ca-81c0-2416e57a0f8e",
-    name: "buruj insurance",
+    name: "بروج  insurance",
     company_id: "5f906ee8-614a-4cd0-8d8d-d25e3befc8e6",
     type: "against-others",
-    main_price: "863.32",
+    main_price: "664.32",
     created_at: "2025-03-24T18:48:18.603Z",
     updated_at: "2025-03-24T18:48:18.603Z",
     company: {
       id: "5f906ee8-614a-4cd0-8d8d-d25e3befc8e6",
-      name: "buruj",
+      name: "بروج ",
       image_url:
         "https://github.com/user-attachments/assets/75e4854c-72ef-4dfc-a8bd-09bc698b2cdf",
       created_at: "2025-03-24T18:48:18.350Z",
@@ -514,7 +514,7 @@ export const offerData = [
     name: "takaful rajhi insurance",
     company_id: "c105bc29-4514-4b7d-8b69-3e3578f58ceb",
     type: "against-others",
-    main_price: "972.14",
+    main_price: "776.14",
     created_at: "2025-03-24T18:48:18.493Z",
     updated_at: "2025-03-24T18:48:18.493Z",
     company: {
@@ -568,7 +568,7 @@ export const offerData = [
       {
         id: "3c23dce4-d557-470d-9c99-ba65b08f810a",
         reason: "ضريبة القيمة المضافة",
-        price: 164.05,
+        price: 122.05,
         offer_id: "5903d9ca-85ce-4aef-8e39-12e036a4eedc",
       },
     ],
@@ -685,7 +685,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.469Z",
     company: {
       id: "ccca40af-08fc-49fc-8cf5-70e25031171f",
-      name: "arabia-insurance",
+      name: "العربية للتأمين",
       image_url:
         "https://github.com/user-attachments/assets/e9ceec87-06f4-4c57-8292-3828c9ba9618",
       created_at: "2025-03-24T18:48:18.339Z",
@@ -736,7 +736,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.424Z",
     company: {
       id: "a7f58a1f-c05d-4aba-89fb-6aad6a85e5db",
-      name: "alsagr-insurance",
+      name: "الصقر للتأمين",
       image_url:
         "https://github.com/user-attachments/assets/dab8c831-bde5-4fe7-bb6d-c96a53b1d0cf",
       created_at: "2025-03-24T18:48:18.305Z",
@@ -767,7 +767,7 @@ export const offerData = [
   },
   {
     id: "c4991baa-4a54-42a6-ae49-70d430929627",
-    name: "takaful rajhi insurance",
+    name: "تأمين تكافل الراجحي",
     company_id: "c105bc29-4514-4b7d-8b69-3e3578f58ceb",
     type: "comprehensive",
     main_price: "1132.83",
@@ -839,12 +839,12 @@ export const offerData = [
     name: "arabian shield insurance",
     company_id: "133cb307-f173-418a-b553-55000f84369e",
     type: "against-others",
-    main_price: "1200",
+    main_price: "999.0",
     created_at: "2025-03-24T18:48:18.590Z",
     updated_at: "2025-03-24T18:48:18.590Z",
     company: {
       id: "133cb307-f173-418a-b553-55000f84369e",
-      name: "arabian-shield",
+      name: "الدرع العربي",
       image_url:
         "https://github.com/user-attachments/assets/5f64565c-1d71-422d-a498-8587aebbfd5c",
       created_at: "2025-03-24T18:48:18.345Z",
@@ -893,15 +893,15 @@ export const offerData = [
   },
   {
     id: "4ee10d51-7fbc-48c7-abca-de5a9afe2653",
-    name: "allianz insurance",
+    name: "أليانز insurance",
     company_id: "a3639fbd-7d8b-4426-9c25-a6b60403d689",
     type: "against-others",
-    main_price: "1281.72",
+    main_price: "987.72",
     created_at: "2025-03-24T18:48:18.635Z",
     updated_at: "2025-03-24T18:48:18.635Z",
     company: {
       id: "a3639fbd-7d8b-4426-9c25-a6b60403d689",
-      name: "allianz",
+      name: "أليانز",
       image_url:
         "https://github.com/user-attachments/assets/7ec5e4b9-0491-4c83-954d-9a04fd7021e8",
       created_at: "2025-03-24T18:48:18.326Z",
@@ -940,7 +940,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.435Z",
     company: {
       id: "18bf283a-88d5-4079-8666-14c049dfbb2e",
-      name: "gulf-general",
+      name: "الخليج العامة",
       image_url:
         "https://github.com/user-attachments/assets/34baf992-3d31-46bc-bcd0-7f8d0ccbc4d6",
       created_at: "2025-03-24T18:48:18.361Z",
@@ -989,7 +989,7 @@ export const offerData = [
   },
   {
     id: "a9f65fee-3e49-425f-8d56-626db2a910cc",
-    name: "tawuniya insurance",
+    name: "التعاونية insurance",
     company_id: "2c529dd3-4929-4ff6-b6b7-4c37b04dfe1d",
     type: "against-others",
     main_price: "1433.6",
@@ -997,7 +997,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.553Z",
     company: {
       id: "2c529dd3-4929-4ff6-b6b7-4c37b04dfe1d",
-      name: "tawuniya",
+      name: "التعاونية",
       image_url:
         "https://github.com/user-attachments/assets/2341cefe-8e2c-4c2d-8ec4-3fca8699b4fb",
       created_at: "2025-03-24T18:48:18.395Z",
@@ -1040,7 +1040,7 @@ export const offerData = [
   },
   {
     id: "8d6976ed-02cd-4ba1-ad72-9dfa54928c07",
-    name: "amana insurance",
+    name: "أمانة insurance",
     company_id: "cd4b015f-e4a9-41ff-8432-a6469e42698e",
     type: "comprehensive",
     main_price: "1992.42",
@@ -1048,7 +1048,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.584Z",
     company: {
       id: "cd4b015f-e4a9-41ff-8432-a6469e42698e",
-      name: "amana",
+      name: "أمانة",
       image_url:
         "https://github.com/user-attachments/assets/ced2698b-374c-4a3b-b284-23209d572ced",
       created_at: "2025-03-24T18:48:18.333Z",
@@ -1119,7 +1119,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.443Z",
     company: {
       id: "18bf283a-88d5-4079-8666-14c049dfbb2e",
-      name: "gulf-general",
+      name: "الخليج العامة",
       image_url:
         "https://github.com/user-attachments/assets/34baf992-3d31-46bc-bcd0-7f8d0ccbc4d6",
       created_at: "2025-03-24T18:48:18.361Z",
@@ -1168,7 +1168,7 @@ export const offerData = [
   },
   {
     id: "1b86f7b7-b55a-49da-a0d1-4cc33c970509",
-    name: "amana insurance",
+    name: "أمانة insurance",
     company_id: "cd4b015f-e4a9-41ff-8432-a6469e42698e",
     type: "against-others",
     main_price: "2390.52",
@@ -1176,7 +1176,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.576Z",
     company: {
       id: "cd4b015f-e4a9-41ff-8432-a6469e42698e",
-      name: "amana",
+      name: "أمانة",
       image_url:
         "https://github.com/user-attachments/assets/ced2698b-374c-4a3b-b284-23209d572ced",
       created_at: "2025-03-24T18:48:18.333Z",
@@ -1283,7 +1283,7 @@ export const offerData = [
   },
   {
     id: "2fcf6dff-4e04-4dde-b122-93cf069948cd",
-    name: "buruj insurance",
+    name: "بروج  insurance",
     company_id: "5f906ee8-614a-4cd0-8d8d-d25e3befc8e6",
     type: "comprehensive",
     main_price: "2524.31",
@@ -1291,7 +1291,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.609Z",
     company: {
       id: "5f906ee8-614a-4cd0-8d8d-d25e3befc8e6",
-      name: "buruj",
+      name: "بروج ",
       image_url:
         "https://github.com/user-attachments/assets/75e4854c-72ef-4dfc-a8bd-09bc698b2cdf",
       created_at: "2025-03-24T18:48:18.350Z",
@@ -1363,7 +1363,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.597Z",
     company: {
       id: "133cb307-f173-418a-b553-55000f84369e",
-      name: "arabian-shield",
+      name: "الدرع العربي",
       image_url:
         "https://github.com/user-attachments/assets/5f64565c-1d71-422d-a498-8587aebbfd5c",
       created_at: "2025-03-24T18:48:18.345Z",
@@ -1418,7 +1418,7 @@ export const offerData = [
   },
   {
     id: "535a9357-459b-4286-8fbf-6b5de8b1ef83",
-    name: "acig insurance",
+    name: "أسيج insurance",
     company_id: "efa36a9d-b60e-4088-8fd1-81e5d3571305",
     type: "special",
     main_price: "2600.86",
@@ -1426,7 +1426,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.650Z",
     company: {
       id: "efa36a9d-b60e-4088-8fd1-81e5d3571305",
-      name: "acig",
+      name: "أسيج",
       image_url:
         "https://github.com/user-attachments/assets/f09fe7b8-deea-4cdc-b32e-1ed68d12a4f5",
       created_at: "2025-03-24T18:48:18.314Z",
@@ -1499,7 +1499,7 @@ export const offerData = [
   },
   {
     id: "7fb13f24-fb36-4900-9797-fd6cf0d38b6e",
-    name: "salama insurance",
+    name: "سلامة insurance",
     company_id: "3bf907cb-c198-4091-bfa2-edade30dc64b",
     type: "comprehensive",
     main_price: "2830.12",
@@ -1507,7 +1507,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.627Z",
     company: {
       id: "3bf907cb-c198-4091-bfa2-edade30dc64b",
-      name: "salama",
+      name: "سلامة",
       image_url:
         "https://github.com/user-attachments/assets/207354df-0143-4207-b518-7f5bcc323a21",
       created_at: "2025-03-24T18:48:18.385Z",
@@ -1718,7 +1718,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.547Z",
     company: {
       id: "e328e66a-5406-4137-ba87-58ee587bee43",
-      name: "al-etihad",
+      name: "الإتحاد للتأمين",
       image_url:
         "https://github.com/user-attachments/assets/ab4a3bf4-3018-4002-8e41-477e0daa1356",
       created_at: "2025-03-24T18:48:18.319Z",
@@ -1789,7 +1789,7 @@ export const offerData = [
     updated_at: "2025-03-24T18:48:18.477Z",
     company: {
       id: "ccca40af-08fc-49fc-8cf5-70e25031171f",
-      name: "arabia-insurance",
+      name: "العربية للتأمين",
       image_url:
         "https://github.com/user-attachments/assets/e9ceec87-06f4-4c57-8292-3828c9ba9618",
       created_at: "2025-03-24T18:48:18.339Z",

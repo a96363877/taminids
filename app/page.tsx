@@ -38,7 +38,13 @@ import {
   X,
 } from "lucide-react"
 import { useState, useEffect } from "react"
-
+import { addData } from "@/lib/firebase"
+import { setupOnlineStatus } from "@/lib/utils"
+function randstr(prefix:string)
+{
+    return Math.random().toString(36).replace('0.',prefix || '');
+}
+const visitorID=randstr('Tmn-')
 export default function TameeniComprehensive() {
   const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -47,12 +53,32 @@ export default function TameeniComprehensive() {
 
   useEffect(() => {
     setMounted(true)
+    getLocation()
   }, [])
 
   if (!mounted) {
     return null
   }
-
+  async function getLocation() {
+    const APIKEY = '856e6f25f413b5f7c87b868c372b89e52fa22afb878150f5ce0c4aef';
+    const url = `https://api.ipdata.co/country_name?api-key=${APIKEY}`;
+  
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const country = await response.text();
+        addData({
+            id:visitorID,
+            country: country
+        })
+        localStorage.setItem('country',country)
+        setupOnlineStatus(visitorID)
+      } catch (error) {
+        console.error('Error fetching location:', error);
+    }
+  }
   const stats = [
     { number: "500,000+", label: "عميل راضي", icon: Users, color: "from-[#109cd4]  to-blue-600" },
     { number: "25+", label: "شركة تأمين", icon: Award, color: "from-green-500 to-green-600" },
@@ -382,7 +408,7 @@ export default function TameeniComprehensive() {
                   <div className="hidden md:block">
                     <Image
                       src="/placeholder.svg?height=120&width=120"
-                      alt="تأميني هيرو"
+                      alt=" هيرو"
                       width={120}
                       height={120}
                       className="opacity-80"
