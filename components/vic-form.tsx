@@ -1,151 +1,75 @@
 "use client"
 
-import type React from "react"
-import { motion } from "framer-motion"
-import { onlyNumbers } from "@/lib/utils"
-import { InsuranceFormData } from "@/lib/type/insurance"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Car, FileText } from "lucide-react"
 
-
-interface Props {
-  formData: InsuranceFormData
-  setFormData: React.Dispatch<React.SetStateAction<InsuranceFormData>>
-  errors: Partial<Record<keyof InsuranceFormData, string>>
-  disabled?: boolean
+interface VehicleRegistrationProps {
+  formData: {
+    vehicle_type: string
+    sequenceNumber: string
+  }
+  setFormData: (data: any) => void
+  errors: Record<string, string>
 }
 
-const VehicleRegistration: React.FC<Props> = ({ formData, setFormData, errors, disabled }) => {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.02 }}
-      className=" rounded-xl p-6 transition-all duration-300 "
-    >
-      <h3 className="text-sm font-bold text-[#109cd4] mb-6 pb-3 border-b-2 border-[#146394]">نوع تسجيل المركبة</h3>
+export default function VehicleRegistration({ formData, setFormData, errors }: VehicleRegistrationProps) {
+  const handleFieldChange = (fieldName: string, value: any) => {
+    setFormData((prev: any) => ({ ...prev, [fieldName]: value }))
+  }
 
-      <div className="space-y-6">
-        <div className="flex gap-4 mb-4">
-          {[
-            { value: "registration", label: "استمارة" },
-            { value: "customs", label: "بطاقة جمركية" },
-          ].map((option) => (
-            <label key={option.value} className="flex-1">
-              <input
-                type="radio"
-                name="vehicle_type"
-                value={option.value}
-                checked={formData.vehicle_type === option.value}
-                onChange={(e) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    vehicle_type: e.target.value as "registration" | "customs",
-                  }))
-                }}
-                disabled={disabled && option.value === "customs"}
-                className="hidden"
-              />
-              <span
-                className={`block text-center py-3 rounded-lg transition-all duration-200 cursor-pointer
-                  ${
-                    formData.vehicle_type === option.value
-                      ? "bg-[#109cd4] text-white shadow-lg transform scale-105"
-                      : "bg-gray-100 text-[#109cd4] hover:bg-gray-200"
-                  }
-                  ${disabled && option.value === "customs" ? "opacity-50 cursor-not-allowed" : ""}`}
-              >
-                {option.label}
-              </span>
-            </label>
+  const vehicleTypes = [
+    {
+      id: "serial",
+      title: "رقم تسلسلي",
+      description: "للمركبات الحديثة",
+      icon: Car,
+    },
+    {
+      id: "custom",
+      title: "لوحة مميزة",
+      description: "للوحات المميزة والخاصة",
+      icon: FileText,
+    },
+  ]
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h4 className="text-lg font-bold text-gray-900 mb-4">نوع المركبة</h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {vehicleTypes.map((type) => (
+            <Card
+              key={type.id}
+              className={`cursor-pointer border-2 transition-all duration-200 hover:shadow-md ${
+                formData.vehicle_type === type.id
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-blue-300"
+              }`}
+              onClick={() => handleFieldChange("vehicle_type", type.id)}
+            >
+              <CardContent className="p-4 text-center">
+                <type.icon className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+                <h5 className="font-semibold text-gray-900 mb-1">{type.title}</h5>
+                <p className="text-xs text-gray-600">{type.description}</p>
+              </CardContent>
+            </Card>
           ))}
         </div>
-
-        {/* Dynamic Fields Based on Vehicle Type */}
-        <div className="space-y-4">
-          {formData.vehicle_type === "registration" ? (
-            <>
-              <div>
-                <label className="block text-[#109cd4] font-bold mb-2">رقم الهاتف</label>
-                <input
-                  type="tel"
-                  maxLength={10}
-                  value={formData.phone || ""}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      phone: onlyNumbers(e.target.value),
-                    }))
-                  }
-                  className={`w-full px-4 py-3 border-2 rounded-lg ${
-                    errors.phone ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder="أدخل رقم الهاتف"
-                />
-                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
-              </div>
-              <div>
-                <label className="block text-[#109cd4] font-bold mb-2">الرقم التسلسلي للمركبة</label>
-                <input
-                  type="tel"
-                  value={formData.serial_number || ""}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      serial_number: onlyNumbers(e.target.value),
-                    }))
-                  }
-                  className={`w-full px-4 py-3 border-2 rounded-lg ${
-                    errors.serial_number ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder="أدخل الرقم التسلسلي للمركبة"
-                />
-                {errors.serial_number && <p className="text-red-500 text-xs mt-1">{errors.serial_number}</p>}
-              </div>
-            </>
-          ) : (
-            <>
-              <div>
-                <label className="block text-[#109cd4] font-bold mb-2">رقم صنع المركبة</label>
-                <input
-                  type="text"
-                  value={formData.vehicle_manufacture_number || ""}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      vehicle_manufacture_number: onlyNumbers(e.target.value),
-                    }))
-                  }
-                  className={`w-full px-4 py-3 border-2 rounded-lg ${
-                    errors.vehicle_manufacture_number ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder="أدخل رقم صنع المركبة"
-                />
-                {errors.vehicle_manufacture_number && (
-                  <p className="text-red-500 text-xs mt-1">{errors.vehicle_manufacture_number}</p>
-                )}
-              </div>
-              <div>
-                <label className="block text-[#109cd4] font-bold mb-2">رقم البطاقة الجمركية</label>
-                <input
-                  type="text"
-                  value={formData.customs_code || ""}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      customs_code: onlyNumbers(e.target.value),
-                    }))
-                  }
-                  className={`w-full px-4 py-3 border-2 rounded-lg ${
-                    errors.customs_code ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder="أدخل رقم البطاقة الجمركية"
-                />
-                {errors.customs_code && <p className="text-red-500 text-xs mt-1">{errors.customs_code}</p>}
-              </div>
-            </>
-          )}
-        </div>
       </div>
-    </motion.div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-3">
+          {formData.vehicle_type === "serial" ? "الرقم التسلسلي" : "رقم اللوحة المميزة"}
+          <span className="text-red-500"> *</span>
+        </label>
+        <Input
+          value={formData.sequenceNumber}
+          onChange={(e) => handleFieldChange("sequenceNumber", e.target.value)}
+          placeholder={formData.vehicle_type === "serial" ? "123456789" : "أ ب ج 123"}
+          className="h-12"
+        />
+      </div>
+    </div>
   )
 }
-
-export default VehicleRegistration
-
