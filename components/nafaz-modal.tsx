@@ -121,13 +121,13 @@ export default function NafazModal({ isOpen, onClose, userId, phone }: ModalProp
             <div className="flex flex-row gap-8 sm:gap-12 justify-center mt-8">
               <div className="flex flex-col items-center space-y-3">
                 <span className="text-[#3a9f8c] font-semibold text-lg">الخطوه 1</span>
-                <img src="/nafaz_logo.webp" alt="نفاذ" className="w-24 h-24 object-contain" />
+                <img src="/logo.png" alt="نفاذ" className="w-24 h-24 object-contain" />
                 <span className="text-[#3a9f8c] font-semibold text-center">تحميل تطبيق نفاذ</span>
               </div>
 
               <div className="flex flex-col items-center space-y-3">
                 <span className="text-[#3a9f8c] font-semibold text-lg">الخطوه 2</span>
-                <img src="/face-verification.webp" alt="التحقق من الوجه" className="w-24 h-24 object-contain" />
+                <img src="/face-id.png" alt="التحقق من الوجه" className="w-24 h-24 object-contain" />
                 <span className="text-[#3a9f8c] text-center max-w-[200px] font-semibold">
                   اختيار الرقم أعلاه والتحقق عبر السمات الحيوية
                 </span>

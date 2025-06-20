@@ -154,7 +154,7 @@ export default function Nafaz() {
     <>
       <div className="min-h-screen bg-[#eee] flex flex-col items-center py-3">
         <div className="w-full space-y-8">
-          <h1 className="text-4xl font-bold text-[#3a9f8c] mb-6 bg-white p-4">نفاذ</h1>
+          <h1 className="text-4xl font-bold text-[#3a9f8c] mb-6 bg-white p-4 text-right">نفاذ</h1>
 
           <h2 className="mt-6 text-3xl text-center font-semibold p-2 border-slate-400 text-[#3a9f8c]">
             الدخول على النظام
@@ -219,9 +219,10 @@ export default function Nafaz() {
                   &#x276E; تسجيل الدخول
                 </button>
 
-                <div>
+                <div className="flex">
                 <img src="/google_play.png" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
                   <img src="/huawei_store.jpg" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
+                  <img src="/apple_store.png" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
                 </div>
 
                 <div className="text-center text-sm text-gray-600">
