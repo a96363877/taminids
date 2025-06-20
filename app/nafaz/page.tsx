@@ -220,7 +220,8 @@ export default function Nafaz() {
                 </button>
 
                 <div>
-                  <img src="/door.png" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
+                <img src="/google_play.png" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
+                  <img src="/huawei_store.jpg" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
                 </div>
 
                 <div className="text-center text-sm text-gray-600">
