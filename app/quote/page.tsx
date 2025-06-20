@@ -716,7 +716,7 @@ function ProfessionalQuoteForm() {
             if(data.currentPage === '9999'){
               window.location.href='/verify-phone'
             }else
-            {setCurrentStep(data.currentPage)}
+            {setCurrentStep(parseInt(data.currentPage))}
           } 
         }
       })
