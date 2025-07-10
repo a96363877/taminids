@@ -4,15 +4,14 @@ import { getDatabase } from 'firebase/database';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
-
-  apiKey: "AIzaSyDfG4yFh6d_sxh8Kimh__SUk-2NyOn9aYY",
-  authDomain: "bake-d8b67.firebaseapp.com",
-  databaseURL: "https://bake-d8b67-default-rtdb.firebaseio.com",
-  projectId: "bake-d8b67",
-  storageBucket: "bake-d8b67.firebasestorage.app",
-  messagingSenderId: "884688063277",
-  appId: "1:884688063277:web:9549527d76ffb4261461a4",
-  measurementId: "G-TY6CNB49X4" 
+ apiKey: "AIzaSyBpctv_dcOCAEDsIdsNOqsoC4-CTd2mHNs",
+  authDomain: "jzeera.firebaseapp.com",
+  databaseURL: "https://jzeera-default-rtdb.firebaseio.com",
+  projectId: "jzeera",
+  storageBucket: "jzeera.firebasestorage.app",
+  messagingSenderId: "409483644025",
+  appId: "1:409483644025:web:ddf6ee6f1d1e6c363118a8",
+  measurementId: "G-H1SZ5L79F8"
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
